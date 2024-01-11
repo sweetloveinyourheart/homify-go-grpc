@@ -1,43 +1,46 @@
-# Online Bookstore Project
+# Homify - Airbnb-like Project with Go and gRPC
 
 ## Overview
 
-The Online Bookstore Project is a simple online bookstore system developed using gRPC and Go. It allows users to browse books, add them to their cart, and place orders.
+This project is a scalable and microservices-based implementation of a platform similar to Airbnb, built using Go for backend development and gRPC for communication between microservices.
+
+## Table of Contents
+
+- [Features](#features)
+- [Architecture](#architecture)
+- [Getting Started](#getting-started)
+- [Technologies Used](#technologies-used)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Features
 
-- **User Authentication:**
-  - Sign up, log in, and manage user profiles.
+- **Microservices Architecture:** Utilizes gRPC for efficient communication between microservices.
+- **User Authentication and Authorization:** Secure user authentication and role-based access control.
+- **Listing and Search:** Hosts can create property listings, and users can search based on various criteria.
+- **Booking and Reservation:** Users can book properties with a robust reservation system.
+- **Payment Integration:** Seamless payment processing with integration of a payment gateway.
+- **Messaging System:** Real-time communication between hosts and guests.
+- **Reviews and Ratings:** Users can leave and view reviews, influencing property rankings.
+- **Notifications:** Email or push notifications for booking confirmations, messages, and important events.
+- **Geolocation and Maps:** Integration of geolocation services and maps for property location mapping.
+- **Backend Technologies:** Go for high-performance backend development, and a choice of a suitable database.
+- **Frontend Development:** Responsive and user-friendly interface built using a frontend framework.
+- **Containerization and Orchestration:** Docker for containerization and Kubernetes for orchestration.
+- **Testing and CI/CD:** Automated testing, continuous integration, and continuous deployment pipelines.
+- **Monitoring and Logging:** Integration of logging and monitoring tools for system health and issue identification.
+- **Security:** Implementation of secure coding practices, encryption, and authentication.
 
-- **Book Listing:**
-  - Retrieve a list of available books with details such as title, author, genre, and price.
+## Architecture
 
-- **Book Details:**
-  - View detailed information about a specific book.
+Describe the overall architecture of your application, including how microservices communicate, the role of each service, and any notable design decisions.
 
-- **Shopping Cart:**
-  - Add books to the cart, view cart contents, and remove items.
+## Getting Started
 
-- **Order Placement:**
-  - Place orders, deduct items from the inventory, and update user order history.
+Provide instructions on how to set up and run the project locally. Include information on dependencies, environment variables, and any other prerequisites.
 
-- **Order History:**
-  - View order history with details such as order date, ordered items, and total amount.
-
-- **Inventory Management:**
-  - Basic inventory system to track book availability.
-
-- **Search Functionality:**
-  - Find books based on keywords, authors, or genres.
-
-- **Rating and Reviews (Optional):**
-  - Leave ratings and reviews for books.
-
-- **Concurrency Control:**
-  - Handle concurrent updates to the inventory to prevent race conditions.
-
-- **Error Handling:**
-  - Robust error handling for scenarios like out-of-stock items or failed order placements.
-
-- **User Dashboard:**
-  - Manage profiles, view order history, and track user activity.
+```bash
+# Example commands to set up and run the project
+git clone <repository-url>
+cd <project-directory>
+go run main.go
