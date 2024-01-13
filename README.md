@@ -44,3 +44,10 @@ Provide instructions on how to set up and run the project locally. Include infor
 git clone <repository-url>
 cd <project-directory>
 go run main.go
+```
+
+## Swagger Setup
+1. Make sure your GO Path is on the PATH environment variable
+```bash
+export PATH=$(go env GOPATH)/bin:$PATH
+```

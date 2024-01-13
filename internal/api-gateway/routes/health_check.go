@@ -8,6 +8,6 @@ import (
 
 var heathCheckHandler = handlers.NewHealthCheckHandler()
 
-func SetupHealthCheckRoute(router *gin.Engine) {
+func SetupHealthCheckRoute(router *gin.RouterGroup) {
 	router.GET("/health", heathCheckHandler.HeathCheck)
 }

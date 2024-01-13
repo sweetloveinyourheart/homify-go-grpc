@@ -1,0 +1,10 @@
+basePath: /api/v1
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample Swagger API for a Go Gin application.
+  termsOfService: https://example.com/terms/
+  title: Swagger Example API
+  version: "1.0"
+paths: {}
+swagger: "2.0"
