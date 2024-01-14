@@ -19,12 +19,9 @@ definitions:
       phone:
         type: string
     required:
-    - birthday
     - email
     - fullName
-    - gender
     - password
-    - phone
     type: object
   handlers.HeathCheckResponse:
     properties:

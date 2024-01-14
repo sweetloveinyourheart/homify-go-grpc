@@ -4,6 +4,7 @@
         "godoc",
         "gonic",
         "homify",
+        "oneof",
         "proto",
         "swaggo"
     ]

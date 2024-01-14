@@ -82,12 +82,9 @@ const docTemplate = `{
         "dtos.SignUpDTO": {
             "type": "object",
             "required": [
-                "birthday",
                 "email",
                 "fullName",
-                "gender",
-                "password",
-                "phone"
+                "password"
             ],
             "properties": {
                 "birthday": {

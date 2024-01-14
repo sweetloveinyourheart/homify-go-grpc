@@ -19,7 +19,7 @@ clean:
 	rm -f bin
 
 swag:
-	swag init -g internal/api-gateway/api_gateway.go
+	swag init -g internal/api-gateway/main.go
 
 proto:
 	protoc --go_out=api --go_opt=paths=source_relative \
