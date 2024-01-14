@@ -1,4 +1,41 @@
 basePath: /api/v1
+definitions:
+  dtos.SignUpDTO:
+    properties:
+      birthday:
+        type: string
+      email:
+        type: string
+      fullName:
+        type: string
+      gender:
+        enum:
+        - Male
+        - Female
+        type: string
+      password:
+        minLength: 8
+        type: string
+      phone:
+        type: string
+    required:
+    - birthday
+    - email
+    - fullName
+    - gender
+    - password
+    - phone
+    type: object
+  handlers.HeathCheckResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  proto.SignUpResponse:
+    properties:
+      message:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -6,5 +43,47 @@ info:
   termsOfService: https://example.com/terms/
   title: Swagger Example API
   version: "1.0"
-paths: {}
+paths:
+  /health:
+    get:
+      description: Returns a simple health check response indicating the status of
+        the service.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.HeathCheckResponse'
+      summary: Health check endpoint
+      tags:
+      - Health check
+  /sign-up:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint allows users to sign up and create a new account.
+        It expects a JSON payload containing user information.
+      operationId: signUp
+      parameters:
+      - description: User information for registration
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.SignUpDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/proto.SignUpResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+      summary: Register a new user account
+      tags:
+      - Authentication
 swagger: "2.0"

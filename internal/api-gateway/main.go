@@ -31,6 +31,7 @@ func RunHTTPServer() {
 	v1 := router.Group("/api/v1")
 	{
 		routes.SetupHealthCheckRoute(v1)
+		routes.SetupAuthenticationHandler(v1)
 	}
 
 	if err := router.Run(configurations.Port); err != nil {

@@ -1,11 +1,13 @@
 package configs
 
 type Config struct {
-	Port string
+	Port                              string
+	AuthenticationClientRemoteAddress string
 }
 
 func GetConfig() Config {
 	return Config{
-		Port: ":8080",
+		Port:                              ":8080",
+		AuthenticationClientRemoteAddress: ":50051",
 	}
 }
