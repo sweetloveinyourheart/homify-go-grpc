@@ -16,7 +16,7 @@ run:
 
 clean:
 	echo "Cleaning up..."
-	rm -f bin
+	rm rf ./bin/*
 
 swag:
 	swag init -g internal/api-gateway/main.go
