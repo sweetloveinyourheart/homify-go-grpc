@@ -20,7 +20,17 @@ func NewGRPCAuthenticationServer() *GRPCAuthenticationServer {
 }
 
 func (a *GRPCAuthenticationServer) SignUp(ctx context.Context, req *proto.SignUpRequest) (*proto.SignUpResponse, error) {
+	success, err := a.svc.SignUp(req)
+
+	if err != nil {
+		return &proto.SignUpResponse{
+			Message: err.Error(),
+			Success: success,
+		}, nil
+	}
+
 	return &proto.SignUpResponse{
-		Message: "Success",
+		Message: "New account was created",
+		Success: success,
 	}, nil
 }

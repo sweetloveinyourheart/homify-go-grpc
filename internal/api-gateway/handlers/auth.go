@@ -6,7 +6,7 @@ import (
 	"homify-go-grpc/internal/api-gateway/configs"
 	"homify-go-grpc/internal/api-gateway/dtos"
 	"homify-go-grpc/internal/api-gateway/helpers"
-	"homify-go-grpc/internal/shared/client"
+	grpc_client "homify-go-grpc/internal/shared/grpc-client"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -21,7 +21,7 @@ type AuthHandler struct {
 func NewAuthHandler() *AuthHandler {
 	// Init auth client connection
 	configurations := configs.GetConfig()
-	c, _ := client.NewGRPCAuthenticationClient(configurations.AuthenticationClientRemoteAddress)
+	c, _ := grpc_client.NewGRPCAuthenticationClient(configurations.AuthenticationClientRemoteAddress)
 
 	// Register the custom date validation function
 	validate := validator.New()
@@ -44,6 +44,7 @@ func NewAuthHandler() *AuthHandler {
 // @Param body body dtos.SignUpDTO true "User information for registration"
 // @Success 201 {object} proto.SignUpResponse "Created"
 // @Failure 400 {object} interface{} "Bad Request"
+
 // @Router /sign-up [post]
 func (h *AuthHandler) SignUp(ctx *gin.Context) {
 	// ValidateSignUpDTO validates the SignUpDTO
@@ -73,7 +74,15 @@ func (h *AuthHandler) SignUp(ctx *gin.Context) {
 	grpcRes, err := h.grpcClient.SignUp(authCtx, grpcReq)
 	if err != nil {
 		log.Printf("could not call SignUp: %v", err)
-		ctx.JSON(400, gin.H{"error": "could not create new account"})
+		ctx.JSON(400, gin.H{"error": "Create new account failed"})
+		return
+	}
+
+	if !grpcRes.Success {
+		ctx.JSON(400, gin.H{
+			"message": "Failed",
+			"data":    grpcRes,
+		})
 		return
 	}
 

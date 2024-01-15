@@ -7,6 +7,7 @@ import (
 
 	proto "homify-go-grpc/api/authentication"
 	"homify-go-grpc/internal/authentication-service/configs"
+	"homify-go-grpc/internal/authentication-service/database"
 	"homify-go-grpc/internal/authentication-service/servers"
 
 	"google.golang.org/grpc"
@@ -14,6 +15,8 @@ import (
 
 func RunGRPCAuthenticationServer() {
 	configurations := configs.GetConfig()
+
+	database.InitPostgresConnection()
 
 	lis, err := net.Listen("tcp", configurations.TCPAddress)
 	if err != nil {

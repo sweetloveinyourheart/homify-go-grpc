@@ -17,4 +17,5 @@ message SignUpRequest {
 
 message SignUpResponse {
     string message = 1;
+    bool success = 2;
 }

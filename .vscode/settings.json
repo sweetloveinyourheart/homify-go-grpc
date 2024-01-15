@@ -1,11 +1,14 @@
 {
     "cSpell.words": [
+        "dbname",
         "dtos",
         "godoc",
         "gonic",
+        "gorm",
         "homify",
         "oneof",
         "proto",
+        "sslmode",
         "swaggo"
     ]
 }
