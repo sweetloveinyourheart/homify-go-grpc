@@ -4,12 +4,13 @@ import (
 	"database/sql"
 	"fmt"
 	"homify-go-grpc/internal/authentication-service/configs"
-	"homify-go-grpc/internal/authentication-service/database"
 	"homify-go-grpc/internal/authentication-service/models"
 	"homify-go-grpc/internal/authentication-service/repositories"
 	"homify-go-grpc/internal/authentication-service/utils"
 	"log"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type LoginAccount struct {
@@ -41,9 +42,7 @@ type AuthenticationService struct {
 	userRepository    repositories.IUserRepository
 }
 
-func NewAuthenticationService() IAuthenticationService {
-	db := database.GetDB()
-
+func NewAuthenticationService(db *gorm.DB) IAuthenticationService {
 	return &AuthenticationService{
 		accountRepository: repositories.NewAccountRepository(db),
 		userRepository:    repositories.NewUserRepository(db),

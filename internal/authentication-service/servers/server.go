@@ -4,6 +4,8 @@ import (
 	"context"
 	proto "homify-go-grpc/api/authentication"
 	"homify-go-grpc/internal/authentication-service/services"
+
+	"gorm.io/gorm"
 )
 
 type GRPCAuthenticationServer struct {
@@ -11,8 +13,8 @@ type GRPCAuthenticationServer struct {
 	proto.UnimplementedAuthenticationServer
 }
 
-func NewGRPCAuthenticationServer() *GRPCAuthenticationServer {
-	svc := services.NewAuthenticationService()
+func NewGRPCAuthenticationServer(db *gorm.DB) *GRPCAuthenticationServer {
+	svc := services.NewAuthenticationService(db)
 
 	return &GRPCAuthenticationServer{
 		svc: svc,

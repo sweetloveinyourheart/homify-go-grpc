@@ -3,10 +3,8 @@ package handlers
 import (
 	"context"
 	proto "homify-go-grpc/api/authentication"
-	"homify-go-grpc/internal/api-gateway/configs"
 	"homify-go-grpc/internal/api-gateway/dtos"
 	"homify-go-grpc/internal/api-gateway/helpers"
-	grpc_client "homify-go-grpc/internal/shared/grpc-client"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -18,15 +16,7 @@ type AuthHandler struct {
 	validator  *validator.Validate
 }
 
-func NewAuthHandler() *AuthHandler {
-	// Init auth client connection
-	configurations := configs.GetConfig()
-	c, _ := grpc_client.NewGRPCAuthenticationClient(configurations.AuthenticationClientRemoteAddress)
-
-	// Register the custom date validation function
-	validate := validator.New()
-	validate.RegisterValidation("customDate", helpers.CustomDate)
-
+func NewAuthHandler(c proto.AuthenticationClient, validate *validator.Validate) *AuthHandler {
 	return &AuthHandler{
 		grpcClient: c,
 		validator:  validate,

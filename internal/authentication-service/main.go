@@ -16,7 +16,7 @@ import (
 func RunGRPCAuthenticationServer() {
 	configurations := configs.GetConfig()
 
-	database.InitPostgresConnection()
+	db := database.InitPostgresConnection()
 
 	lis, err := net.Listen("tcp", configurations.TCPAddress)
 	if err != nil {
@@ -24,7 +24,7 @@ func RunGRPCAuthenticationServer() {
 	}
 
 	s := grpc.NewServer()
-	srv := servers.NewGRPCAuthenticationServer()
+	srv := servers.NewGRPCAuthenticationServer(db)
 	proto.RegisterAuthenticationServer(s, srv)
 
 	fmt.Println("Server is listening on port 50051...")

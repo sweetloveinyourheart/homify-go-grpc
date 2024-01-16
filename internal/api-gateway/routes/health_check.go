@@ -6,8 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var heathCheckHandler = handlers.NewHealthCheckHandler()
-
 func SetupHealthCheckRoute(router *gin.RouterGroup) {
+	heathCheckHandler := handlers.NewHealthCheckHandler()
+
+	// routers
 	router.GET("/health", heathCheckHandler.HeathCheck)
 }

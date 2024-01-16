@@ -3,9 +3,12 @@ package api_gateway
 import (
 	_ "homify-go-grpc/docs"
 	"homify-go-grpc/internal/api-gateway/configs"
+	"homify-go-grpc/internal/api-gateway/helpers"
 	"homify-go-grpc/internal/api-gateway/routes"
+	grpc_client "homify-go-grpc/internal/shared/grpc-client"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -22,6 +25,16 @@ import (
 func RunHTTPServer() {
 	configurations := configs.GetConfig()
 
+	// Init auth client connection
+	client, clientErr := grpc_client.NewGRPCAuthenticationClient(configurations.AuthenticationClientRemoteAddress)
+	if clientErr != nil {
+		panic(clientErr)
+	}
+
+	// Register the custom date validation function
+	validator := validator.New()
+	validator.RegisterValidation("customDate", helpers.CustomDate)
+
 	router := gin.Default()
 
 	// Swagger handler
@@ -31,7 +44,7 @@ func RunHTTPServer() {
 	v1 := router.Group("/api/v1")
 	{
 		routes.SetupHealthCheckRoute(v1)
-		routes.SetupAuthenticationHandler(v1)
+		routes.SetupAuthenticationHandler(v1, client, validator)
 	}
 
 	if err := router.Run(configurations.Port); err != nil {
