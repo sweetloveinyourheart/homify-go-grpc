@@ -24,7 +24,6 @@ func NewHealthCheckHandler() IHealthCheck {
 // @Description Returns a simple health check response indicating the status of the service.
 // @Produce json
 // @Success 200 {object} HeathCheckResponse
-
 // @Router /health [get]
 func (h *HeathCheckHandler) HeathCheck(ctx *gin.Context) {
 	ctx.JSON(200, gin.H{

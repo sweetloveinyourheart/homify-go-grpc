@@ -1,5 +1,15 @@
 basePath: /api/v1
 definitions:
+  dtos.SignInDTO:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
   dtos.SignUpDTO:
     properties:
       birthday:
@@ -28,10 +38,19 @@ definitions:
       message:
         type: string
     type: object
+  proto.SignInResponse:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
   proto.SignUpResponse:
     properties:
       message:
         type: string
+      success:
+        type: boolean
     type: object
 host: localhost:8080
 info:
@@ -55,6 +74,37 @@ paths:
       summary: Health check endpoint
       tags:
       - Health check
+  /sign-in:
+    post:
+      consumes:
+      - application/json
+      description: Handles the user sign-in process by validating input and authenticating
+        the user via gRPC.
+      parameters:
+      - description: User sign-in data in JSON format
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.SignInDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/proto.SignInResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            type: object
+      summary: Handles user sign-in
+      tags:
+      - Authentication
   /sign-up:
     post:
       consumes:

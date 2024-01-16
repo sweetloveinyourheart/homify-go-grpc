@@ -10,4 +10,5 @@ var authenticationHandler = handlers.NewAuthHandler()
 
 func SetupAuthenticationHandler(router *gin.RouterGroup) {
 	router.POST("/sign-up", authenticationHandler.SignUp)
+	router.POST("/sign-in", authenticationHandler.SignIn)
 }

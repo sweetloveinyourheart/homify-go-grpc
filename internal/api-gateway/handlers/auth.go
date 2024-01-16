@@ -44,7 +44,6 @@ func NewAuthHandler() *AuthHandler {
 // @Param body body dtos.SignUpDTO true "User information for registration"
 // @Success 201 {object} proto.SignUpResponse "Created"
 // @Failure 400 {object} interface{} "Bad Request"
-
 // @Router /sign-up [post]
 func (h *AuthHandler) SignUp(ctx *gin.Context) {
 	// ValidateSignUpDTO validates the SignUpDTO
@@ -73,7 +72,7 @@ func (h *AuthHandler) SignUp(ctx *gin.Context) {
 
 	grpcRes, err := h.grpcClient.SignUp(authCtx, grpcReq)
 	if err != nil {
-		log.Printf("could not call SignUp: %v", err)
+		log.Printf("SignUp thrown error: %v", err)
 		ctx.JSON(400, gin.H{"error": "Create new account failed"})
 		return
 	}
@@ -87,6 +86,51 @@ func (h *AuthHandler) SignUp(ctx *gin.Context) {
 	}
 
 	ctx.JSON(201, gin.H{
+		"message": "Created",
+		"data":    grpcRes,
+	})
+}
+
+// SignIn godoc
+// @Tags Authentication
+// @Summary Handles user sign-in
+// @Description Handles the user sign-in process by validating input and authenticating the user via gRPC.
+// @Accept json
+// @Produce json
+// @Param request body dtos.SignInDTO true "User sign-in data in JSON format"
+// @Success 200 {object} proto.SignInResponse
+// @Failure 400 {object} interface{}
+// @Failure 401 {object} interface{}
+// @Router /sign-in [post]
+func (h *AuthHandler) SignIn(ctx *gin.Context) {
+	// ValidateSignInDTO validates the SignInDTO
+	signInData := dtos.SignInDTO{}
+	if bindError := ctx.ShouldBindJSON(&signInData); bindError != nil {
+		ctx.JSON(400, gin.H{"error": bindError.Error()})
+		return
+	}
+
+	validatorError := h.validator.Struct(signInData)
+	if validatorError != nil {
+		helpers.HandleValidationErrors(ctx, validatorError)
+		return
+	}
+
+	authCtx := context.Background()
+
+	grpcReq := &proto.SignInRequest{
+		Email:    signInData.Email,
+		Password: signInData.Password,
+	}
+
+	grpcRes, err := h.grpcClient.SignIn(authCtx, grpcReq)
+	if err != nil {
+		log.Printf("SignIn thrown error: %v", err)
+		ctx.JSON(401, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	ctx.JSON(200, gin.H{
 		"message": "Created",
 		"data":    grpcRes,
 	})

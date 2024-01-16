@@ -8,6 +8,8 @@ type AuthenticationConfig struct {
 	PostgresUser     string
 	PostgresPassword string
 	PostgresDatabase string
+
+	JwtSecret string
 }
 
 func GetConfig() AuthenticationConfig {
@@ -18,5 +20,6 @@ func GetConfig() AuthenticationConfig {
 		PostgresUser:     "root",
 		PostgresPassword: "root",
 		PostgresDatabase: "homify-authentication",
+		JwtSecret:        "secret",
 	}
 }

@@ -20,7 +20,16 @@ func NewGRPCAuthenticationServer() *GRPCAuthenticationServer {
 }
 
 func (a *GRPCAuthenticationServer) SignUp(ctx context.Context, req *proto.SignUpRequest) (*proto.SignUpResponse, error) {
-	success, err := a.svc.SignUp(req)
+	registerData := services.RegisterAccount{
+		Email:    req.Email,
+		Password: req.Password,
+		FullName: req.FullName,
+		Gender:   req.Gender,
+		Birthday: req.Birthday,
+		Phone:    req.Phone,
+	}
+
+	success, err := a.svc.SignUp(registerData)
 
 	if err != nil {
 		return &proto.SignUpResponse{
@@ -32,5 +41,23 @@ func (a *GRPCAuthenticationServer) SignUp(ctx context.Context, req *proto.SignUp
 	return &proto.SignUpResponse{
 		Message: "New account was created",
 		Success: success,
+	}, nil
+}
+
+func (a *GRPCAuthenticationServer) SignIn(ctx context.Context, req *proto.SignInRequest) (*proto.SignInResponse, error) {
+	accountData := services.LoginAccount{
+		Email:    req.Email,
+		Password: req.Password,
+	}
+
+	tokens, err := a.svc.SignIn(accountData)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &proto.SignInResponse{
+		AccessToken:  tokens.AccessToken,
+		RefreshToken: tokens.RefreshToken,
 	}, nil
 }

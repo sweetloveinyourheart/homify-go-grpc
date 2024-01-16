@@ -36,6 +36,52 @@ const docTemplate = `{
                 }
             }
         },
+        "/sign-in": {
+            "post": {
+                "description": "Handles the user sign-in process by validating input and authenticating the user via gRPC.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Handles user sign-in",
+                "parameters": [
+                    {
+                        "description": "User sign-in data in JSON format",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.SignInDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/proto.SignInResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
         "/sign-up": {
             "post": {
                 "description": "This endpoint allows users to sign up and create a new account. It expects a JSON payload containing user information.",
@@ -79,6 +125,21 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dtos.SignInDTO": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
         "dtos.SignUpDTO": {
             "type": "object",
             "required": [
@@ -120,11 +181,25 @@ const docTemplate = `{
                 }
             }
         },
+        "proto.SignInResponse": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "refresh_token": {
+                    "type": "string"
+                }
+            }
+        },
         "proto.SignUpResponse": {
             "type": "object",
             "properties": {
                 "message": {
                     "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
                 }
             }
         }
