@@ -8,18 +8,13 @@ import (
 	grpc_client "homify-go-grpc/internal/shared/grpc-client"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-// @title Swagger Example API
+// @title Homify API
 // @version 1.0
 // @description This is a sample Swagger API for a Go Gin application.
-// @termsOfService https://example.com/terms/
-// @contact name@example.com
-// @license MIT
-
 // @host localhost:8080
 // @BasePath /api/v1
 func RunHTTPServer() {
@@ -31,9 +26,8 @@ func RunHTTPServer() {
 		panic(clientErr)
 	}
 
-	// Register the custom date validation function
-	validator := validator.New()
-	validator.RegisterValidation("customDate", helpers.CustomDate)
+	// Register the validation function
+	validator := helpers.InitValidator()
 
 	router := gin.Default()
 

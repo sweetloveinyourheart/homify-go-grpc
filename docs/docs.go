@@ -9,7 +9,6 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "termsOfService": "https://example.com/terms/",
         "contact": {},
         "version": "{{.Version}}"
     },
@@ -212,7 +211,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8080",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
-	Title:            "Swagger Example API",
+	Title:            "Homify API",
 	Description:      "This is a sample Swagger API for a Go Gin application.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

@@ -2,8 +2,7 @@
     "swagger": "2.0",
     "info": {
         "description": "This is a sample Swagger API for a Go Gin application.",
-        "title": "Swagger Example API",
-        "termsOfService": "https://example.com/terms/",
+        "title": "Homify API",
         "contact": {},
         "version": "1.0"
     },

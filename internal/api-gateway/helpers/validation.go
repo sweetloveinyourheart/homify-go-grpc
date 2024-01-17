@@ -7,6 +7,12 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+func InitValidator() *validator.Validate {
+	validator := validator.New()
+	validator.RegisterValidation("customDate", CustomDate)
+	return validator
+}
+
 func HandleValidationErrors(ctx *gin.Context, err error) {
 	// Extract validation errors and return 400 response
 	var validationErrors []string
