@@ -5,6 +5,7 @@ option go_package = "github.com/Sweetloveinyourheart/micro/proto";
 service Authentication {
 	rpc SignUp(SignUpRequest) returns (SignUpResponse);
 	rpc SignIn(SignInRequest) returns (SignInResponse);
+    rpc VerifyJwtToken(VerifyJwtTokenRequest) returns (VerifyJwtTokenResponse);
 }
 
 message SignUpRequest {
@@ -29,4 +30,13 @@ message SignInRequest {
 message SignInResponse {
     string access_token = 1;
     string refresh_token = 2;
+}
+
+message VerifyJwtTokenRequest {
+    string token = 1;
+}
+
+message VerifyJwtTokenResponse {
+    int32 user_id = 1;
+    string email = 2;
 }

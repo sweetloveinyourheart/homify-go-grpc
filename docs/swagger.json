@@ -1,4 +1,10 @@
 {
+    "produces": [
+        "application/json"
+    ],
+    "schemes": [
+        "http"
+    ],
     "swagger": "2.0",
     "info": {
         "description": "This is a sample Swagger API for a Go Gin application.",
@@ -115,6 +121,37 @@
                     }
                 }
             }
+        },
+        "/user": {
+            "get": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "description": "Get the user profile for the authenticated user",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Get user profile",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -195,6 +232,13 @@
                     "type": "boolean"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "Authorization": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }

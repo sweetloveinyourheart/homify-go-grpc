@@ -63,3 +63,17 @@ func (a *GRPCAuthenticationServer) SignIn(ctx context.Context, req *proto.SignIn
 		RefreshToken: tokens.RefreshToken,
 	}, nil
 }
+
+func (a *GRPCAuthenticationServer) VerifyJwtToken(ctx context.Context, req *proto.VerifyJwtTokenRequest) (*proto.VerifyJwtTokenResponse, error) {
+	token := req.Token
+
+	authenticatedUser, err := a.svc.VerifyJwtToken(token)
+	if err != nil {
+		return &proto.VerifyJwtTokenResponse{}, err
+	}
+
+	return &proto.VerifyJwtTokenResponse{
+		UserId: int32(authenticatedUser.Id),
+		Email:  authenticatedUser.Email,
+	}, nil
+}

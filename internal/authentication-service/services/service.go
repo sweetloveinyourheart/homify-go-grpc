@@ -10,6 +10,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/mitchellh/mapstructure"
 	"gorm.io/gorm"
 )
 
@@ -35,6 +36,7 @@ type RegisterAccount struct {
 type IAuthenticationService interface {
 	SignUp(userData RegisterAccount) (bool, error)
 	SignIn(userData LoginAccount) (Tokens, error)
+	VerifyJwtToken(token string) (utils.TokenPayload, error)
 }
 
 type AuthenticationService struct {
@@ -126,4 +128,21 @@ func (a *AuthenticationService) SignIn(userData LoginAccount) (Tokens, error) {
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}, nil
+}
+
+func (a *AuthenticationService) VerifyJwtToken(token string) (utils.TokenPayload, error) {
+	configurations := configs.GetConfig()
+
+	tokenClaims, err := utils.ValidateJwtToken(token, configurations.JwtSecret)
+	if err != nil {
+		return utils.TokenPayload{}, err
+	}
+
+	var authenticatedUser utils.TokenPayload
+	mapErr := mapstructure.Decode(tokenClaims, &authenticatedUser)
+	if mapErr != nil {
+		return utils.TokenPayload{}, err
+	}
+
+	return authenticatedUser, nil
 }

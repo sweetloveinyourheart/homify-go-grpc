@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type AuthenticationClient interface {
 	SignUp(ctx context.Context, in *SignUpRequest, opts ...grpc.CallOption) (*SignUpResponse, error)
 	SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*SignInResponse, error)
+	VerifyJwtToken(ctx context.Context, in *VerifyJwtTokenRequest, opts ...grpc.CallOption) (*VerifyJwtTokenResponse, error)
 }
 
 type authenticationClient struct {
@@ -52,12 +53,22 @@ func (c *authenticationClient) SignIn(ctx context.Context, in *SignInRequest, op
 	return out, nil
 }
 
+func (c *authenticationClient) VerifyJwtToken(ctx context.Context, in *VerifyJwtTokenRequest, opts ...grpc.CallOption) (*VerifyJwtTokenResponse, error) {
+	out := new(VerifyJwtTokenResponse)
+	err := c.cc.Invoke(ctx, "/Authentication/VerifyJwtToken", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthenticationServer is the server API for Authentication service.
 // All implementations must embed UnimplementedAuthenticationServer
 // for forward compatibility
 type AuthenticationServer interface {
 	SignUp(context.Context, *SignUpRequest) (*SignUpResponse, error)
 	SignIn(context.Context, *SignInRequest) (*SignInResponse, error)
+	VerifyJwtToken(context.Context, *VerifyJwtTokenRequest) (*VerifyJwtTokenResponse, error)
 	mustEmbedUnimplementedAuthenticationServer()
 }
 
@@ -70,6 +81,9 @@ func (UnimplementedAuthenticationServer) SignUp(context.Context, *SignUpRequest)
 }
 func (UnimplementedAuthenticationServer) SignIn(context.Context, *SignInRequest) (*SignInResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SignIn not implemented")
+}
+func (UnimplementedAuthenticationServer) VerifyJwtToken(context.Context, *VerifyJwtTokenRequest) (*VerifyJwtTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyJwtToken not implemented")
 }
 func (UnimplementedAuthenticationServer) mustEmbedUnimplementedAuthenticationServer() {}
 
@@ -120,6 +134,24 @@ func _Authentication_SignIn_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Authentication_VerifyJwtToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VerifyJwtTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthenticationServer).VerifyJwtToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Authentication/VerifyJwtToken",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthenticationServer).VerifyJwtToken(ctx, req.(*VerifyJwtTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Authentication_ServiceDesc is the grpc.ServiceDesc for Authentication service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +166,10 @@ var Authentication_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SignIn",
 			Handler:    _Authentication_SignIn_Handler,
+		},
+		{
+			MethodName: "VerifyJwtToken",
+			Handler:    _Authentication_VerifyJwtToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

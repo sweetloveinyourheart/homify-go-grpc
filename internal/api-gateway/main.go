@@ -17,6 +17,14 @@ import (
 // @description This is a sample Swagger API for a Go Gin application.
 // @host localhost:8080
 // @BasePath /api/v1
+// @schemes http
+// @BasePath /api/v1
+// @produce json
+
+// @SecurityDefinitions.apiKey Authorization
+// @Security apiKey
+// @in header
+// @name Authorization
 func RunHTTPServer() {
 	configurations := configs.GetConfig()
 

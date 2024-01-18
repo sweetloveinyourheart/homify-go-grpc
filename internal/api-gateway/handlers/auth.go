@@ -5,6 +5,7 @@ import (
 	proto "homify-go-grpc/api/authentication"
 	"homify-go-grpc/internal/api-gateway/dtos"
 	"homify-go-grpc/internal/api-gateway/helpers"
+	"homify-go-grpc/internal/api-gateway/middlewares"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -123,5 +124,31 @@ func (h *AuthHandler) SignIn(ctx *gin.Context) {
 	ctx.JSON(200, gin.H{
 		"message": "Created",
 		"data":    grpcRes,
+	})
+}
+
+// GetUserProfile godoc
+// @Summary Get user profile
+// @Description Get the user profile for the authenticated user
+// @Tags Authentication
+// @Security Authorization
+// @Produce json
+// @Success 200 {object} interface{} "success"
+// @Failure 401 {object} interface{} "unauthorized"
+// @Router /user [get]
+func (h *AuthHandler) GetUserProfile(ctx *gin.Context) {
+	user, ok := ctx.Get("user")
+
+	if !ok {
+		ctx.JSON(200, gin.H{
+			"message": "Unauthorized",
+		})
+	}
+
+	authenticatedUser := user.(middlewares.AuthenticatedUser)
+
+	ctx.JSON(200, gin.H{
+		"message": "Success",
+		"data":    authenticatedUser,
 	})
 }

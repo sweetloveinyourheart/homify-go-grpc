@@ -132,4 +132,32 @@ paths:
       summary: Register a new user account
       tags:
       - Authentication
+  /user:
+    get:
+      description: Get the user profile for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            type: object
+        "401":
+          description: unauthorized
+          schema:
+            type: object
+      security:
+      - Authorization: []
+      summary: Get user profile
+      tags:
+      - Authentication
+produces:
+- application/json
+schemes:
+- http
+securityDefinitions:
+  Authorization:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

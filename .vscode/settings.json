@@ -6,6 +6,7 @@
         "gonic",
         "gorm",
         "homify",
+        "mapstructure",
         "oneof",
         "proto",
         "sslmode",
