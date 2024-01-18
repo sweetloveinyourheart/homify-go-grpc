@@ -3,18 +3,18 @@ package server
 import (
 	"context"
 	proto "homify-go-grpc/api/authentication"
-	"homify-go-grpc/internal/authentication-service/service"
+	"homify-go-grpc/internal/authentication-service/services"
 
 	"gorm.io/gorm"
 )
 
 type GRPCAuthenticationServer struct {
-	svc service.IAuthenticationService
+	svc services.IAuthenticationService
 	proto.UnimplementedAuthenticationServer
 }
 
 func NewGRPCAuthenticationServer(db *gorm.DB) *GRPCAuthenticationServer {
-	svc := service.NewAuthenticationService(db)
+	svc := services.NewAuthenticationService(db)
 
 	return &GRPCAuthenticationServer{
 		svc: svc,
@@ -22,7 +22,7 @@ func NewGRPCAuthenticationServer(db *gorm.DB) *GRPCAuthenticationServer {
 }
 
 func (a *GRPCAuthenticationServer) SignUp(ctx context.Context, req *proto.SignUpRequest) (*proto.SignUpResponse, error) {
-	registerData := service.RegisterAccount{
+	registerData := services.RegisterAccount{
 		Email:    req.Email,
 		Password: req.Password,
 		FullName: req.FullName,
@@ -47,7 +47,7 @@ func (a *GRPCAuthenticationServer) SignUp(ctx context.Context, req *proto.SignUp
 }
 
 func (a *GRPCAuthenticationServer) SignIn(ctx context.Context, req *proto.SignInRequest) (*proto.SignInResponse, error) {
-	accountData := service.LoginAccount{
+	accountData := services.LoginAccount{
 		Email:    req.Email,
 		Password: req.Password,
 	}
