@@ -8,7 +8,7 @@ import (
 	proto "homify-go-grpc/api/authentication"
 	"homify-go-grpc/internal/authentication-service/configs"
 	"homify-go-grpc/internal/authentication-service/database"
-	"homify-go-grpc/internal/authentication-service/servers"
+	"homify-go-grpc/internal/authentication-service/server"
 
 	"google.golang.org/grpc"
 )
@@ -24,7 +24,7 @@ func RunGRPCAuthenticationServer() {
 	}
 
 	s := grpc.NewServer()
-	srv := servers.NewGRPCAuthenticationServer(db)
+	srv := server.NewGRPCAuthenticationServer(db)
 	proto.RegisterAuthenticationServer(s, srv)
 
 	fmt.Println("Server is listening on port 50051...")
