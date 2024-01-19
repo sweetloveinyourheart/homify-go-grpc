@@ -16,6 +16,21 @@ services:
     volumes:
       - homify-authentication-data:/var/lib/postgresql/data
 
+  homify-property-listing-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_PORT: 5432
+      POSTGRES_HOST: localhost
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: homify-property-listing
+    ports:
+      - "50042:5432"
+    networks:
+      - homify-network
+    volumes:
+      - homify-property-listing-data:/var/lib/postgresql/data
+
 networks:
   homify-network:
     driver: bridge
