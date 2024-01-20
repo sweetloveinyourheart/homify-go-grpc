@@ -26,7 +26,7 @@ func RunGRPCPropertyListingServer() {
 	srv := server.NewGRPCPropertyListingServer(db)
 	proto.RegisterPropertyListingServer(s, srv)
 
-	fmt.Printf("Server is listening on port %s ...", configurations.TCPAddress)
+	fmt.Printf("🚀 Property Listing Server is listening on port %s ... \n", configurations.TCPAddress)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

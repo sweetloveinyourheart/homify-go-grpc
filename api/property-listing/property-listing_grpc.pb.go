@@ -7,7 +7,10 @@
 package proto
 
 import (
+	context "context"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -19,6 +22,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PropertyListingClient interface {
+	AddAsset(ctx context.Context, in *AddAssetRequest, opts ...grpc.CallOption) (*AddAssetResponse, error)
+	ModifyAsset(ctx context.Context, in *ModifyAssetRequest, opts ...grpc.CallOption) (*ModifyAssetResponse, error)
+	DisableAsset(ctx context.Context, in *DisableAssetRequest, opts ...grpc.CallOption) (*DisableAssetResponse, error)
 }
 
 type propertyListingClient struct {
@@ -29,10 +35,40 @@ func NewPropertyListingClient(cc grpc.ClientConnInterface) PropertyListingClient
 	return &propertyListingClient{cc}
 }
 
+func (c *propertyListingClient) AddAsset(ctx context.Context, in *AddAssetRequest, opts ...grpc.CallOption) (*AddAssetResponse, error) {
+	out := new(AddAssetResponse)
+	err := c.cc.Invoke(ctx, "/PropertyListing/AddAsset", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *propertyListingClient) ModifyAsset(ctx context.Context, in *ModifyAssetRequest, opts ...grpc.CallOption) (*ModifyAssetResponse, error) {
+	out := new(ModifyAssetResponse)
+	err := c.cc.Invoke(ctx, "/PropertyListing/ModifyAsset", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *propertyListingClient) DisableAsset(ctx context.Context, in *DisableAssetRequest, opts ...grpc.CallOption) (*DisableAssetResponse, error) {
+	out := new(DisableAssetResponse)
+	err := c.cc.Invoke(ctx, "/PropertyListing/DisableAsset", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PropertyListingServer is the server API for PropertyListing service.
 // All implementations must embed UnimplementedPropertyListingServer
 // for forward compatibility
 type PropertyListingServer interface {
+	AddAsset(context.Context, *AddAssetRequest) (*AddAssetResponse, error)
+	ModifyAsset(context.Context, *ModifyAssetRequest) (*ModifyAssetResponse, error)
+	DisableAsset(context.Context, *DisableAssetRequest) (*DisableAssetResponse, error)
 	mustEmbedUnimplementedPropertyListingServer()
 }
 
@@ -40,6 +76,15 @@ type PropertyListingServer interface {
 type UnimplementedPropertyListingServer struct {
 }
 
+func (UnimplementedPropertyListingServer) AddAsset(context.Context, *AddAssetRequest) (*AddAssetResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddAsset not implemented")
+}
+func (UnimplementedPropertyListingServer) ModifyAsset(context.Context, *ModifyAssetRequest) (*ModifyAssetResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ModifyAsset not implemented")
+}
+func (UnimplementedPropertyListingServer) DisableAsset(context.Context, *DisableAssetRequest) (*DisableAssetResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DisableAsset not implemented")
+}
 func (UnimplementedPropertyListingServer) mustEmbedUnimplementedPropertyListingServer() {}
 
 // UnsafePropertyListingServer may be embedded to opt out of forward compatibility for this service.
@@ -53,13 +98,80 @@ func RegisterPropertyListingServer(s grpc.ServiceRegistrar, srv PropertyListingS
 	s.RegisterService(&PropertyListing_ServiceDesc, srv)
 }
 
+func _PropertyListing_AddAsset_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddAssetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PropertyListingServer).AddAsset(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/PropertyListing/AddAsset",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PropertyListingServer).AddAsset(ctx, req.(*AddAssetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PropertyListing_ModifyAsset_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ModifyAssetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PropertyListingServer).ModifyAsset(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/PropertyListing/ModifyAsset",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PropertyListingServer).ModifyAsset(ctx, req.(*ModifyAssetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PropertyListing_DisableAsset_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DisableAssetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PropertyListingServer).DisableAsset(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/PropertyListing/DisableAsset",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PropertyListingServer).DisableAsset(ctx, req.(*DisableAssetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PropertyListing_ServiceDesc is the grpc.ServiceDesc for PropertyListing service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var PropertyListing_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "PropertyListing",
 	HandlerType: (*PropertyListingServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams:     []grpc.StreamDesc{},
-	Metadata:    "property-listing/property-listing.proto",
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "AddAsset",
+			Handler:    _PropertyListing_AddAsset_Handler,
+		},
+		{
+			MethodName: "ModifyAsset",
+			Handler:    _PropertyListing_ModifyAsset_Handler,
+		},
+		{
+			MethodName: "DisableAsset",
+			Handler:    _PropertyListing_DisableAsset_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "property-listing/property-listing.proto",
 }

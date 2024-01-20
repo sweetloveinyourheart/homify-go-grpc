@@ -52,8 +52,8 @@ func NewAuthenticationService(db *gorm.DB) IAuthenticationService {
 }
 
 func (a *AuthenticationService) SignUp(newUserData RegisterAccount) (bool, error) {
-	existingAccount, getAccountErr := a.accountRepository.GetAccountByField("Email", newUserData.Email)
-	if existingAccount != nil || getAccountErr != nil {
+	existingAccount, _ := a.accountRepository.GetAccountByField("Email", newUserData.Email)
+	if existingAccount != nil {
 		return false, fmt.Errorf("account is already exist")
 	}
 
@@ -107,6 +107,7 @@ func (a *AuthenticationService) SignIn(userData LoginAccount) (Tokens, error) {
 	payload := utils.TokenPayload{
 		Id:    account.ID,
 		Email: account.Email,
+		Role:  account.Role,
 	}
 
 	configurations := configs.GetConfig()

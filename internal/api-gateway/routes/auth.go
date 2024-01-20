@@ -9,13 +9,18 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-func SetupAuthenticationHandler(router *gin.RouterGroup, client proto.AuthenticationClient, validator *validator.Validate) {
+func SetupAuthenticationHandler(
+	router *gin.RouterGroup,
+	client proto.AuthenticationClient,
+	jwtAuthGuard *middlewares.JwtAuthGuard,
+	validator *validator.Validate,
+) {
 	authenticationHandler := handlers.NewAuthHandler(client, validator)
-	jwtAuthGuard := middlewares.NewJwtAuthGuard(client)
+	authGuard := jwtAuthGuard
 
 	// routes
 	router.POST("/sign-up", authenticationHandler.SignUp)
 	router.POST("/sign-in", authenticationHandler.SignIn)
 
-	router.GET("/user", jwtAuthGuard.AuthGuard, authenticationHandler.GetUserProfile)
+	router.GET("/user", authGuard.AuthGuard, authenticationHandler.GetUserProfile)
 }

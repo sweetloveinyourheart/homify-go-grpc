@@ -75,5 +75,6 @@ func (a *GRPCAuthenticationServer) VerifyJwtToken(ctx context.Context, req *prot
 	return &proto.VerifyJwtTokenResponse{
 		UserId: int32(authenticatedUser.Id),
 		Email:  authenticatedUser.Email,
+		Role:   authenticatedUser.Role,
 	}, nil
 }

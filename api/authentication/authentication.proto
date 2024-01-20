@@ -39,4 +39,5 @@ message VerifyJwtTokenRequest {
 message VerifyJwtTokenResponse {
     int32 user_id = 1;
     string email = 2;
+    string role = 3;
 }

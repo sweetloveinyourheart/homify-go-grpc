@@ -17,6 +17,6 @@ func GetConfig() PropertyListingConfig {
 		PostgresPort:     "50042",
 		PostgresUser:     "root",
 		PostgresPassword: "root",
-		PostgresDatabase: "homify-listing",
+		PostgresDatabase: "homify-property-listing",
 	}
 }

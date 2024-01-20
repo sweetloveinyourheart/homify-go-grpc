@@ -11,6 +11,7 @@ type IAmenityService interface {
 	CreateAmenity(category *models.Amenity) error
 	GetAmenityByID(categoryID uint) (*models.Amenity, error)
 	UpdateAmenity(category *models.Amenity) error
+	DisableAmenity(categoryID uint) error
 	DeleteAmenity(categoryID uint) error
 }
 
@@ -40,6 +41,16 @@ func (s *AmenityService) UpdateAmenity(category *models.Amenity) error {
 	}
 
 	return s.repo.UpdateAmenity(category)
+}
+
+func (s *AmenityService) DisableAmenity(categoryID uint) error {
+	// Check if the category exists
+	_, err := s.GetAmenityByID(categoryID)
+	if err != nil {
+		return err // Amenity not found
+	}
+
+	return s.repo.DisableAmenity(categoryID)
 }
 
 func (s *AmenityService) DeleteAmenity(categoryID uint) error {

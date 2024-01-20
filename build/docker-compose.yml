@@ -37,3 +37,4 @@ networks:
 
 volumes:
   homify-authentication-data:
+  homify-property-listing-data:

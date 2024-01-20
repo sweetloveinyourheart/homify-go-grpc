@@ -18,6 +18,143 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/assets": {
+            "post": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "description": "Creates a new asset based on the provided JSON payload.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Assets"
+                ],
+                "summary": "Create a new asset",
+                "operationId": "addNewAsset",
+                "parameters": [
+                    {
+                        "description": "JSON payload containing data for the new asset",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.NewAssets"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The asset was created successfully",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed to create the new asset due to validation errors or other issues",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "/assets/disable": {
+            "put": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "description": "Disables an existing asset based on the provided asset_id and asset_type.",
+                "tags": [
+                    "Assets"
+                ],
+                "summary": "Disable an existing asset",
+                "operationId": "disableAnAsset",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Asset ID to be disabled",
+                        "name": "asset_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Type of the asset to be disabled",
+                        "name": "asset_type",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The asset was disabled successfully",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed to disable the asset due to validation errors or other issues",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "/assets/modify": {
+            "post": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "description": "Modifies an existing asset based on the provided JSON payload.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Assets"
+                ],
+                "summary": "Modify an existing asset",
+                "operationId": "modifyExistingAsset",
+                "parameters": [
+                    {
+                        "description": "JSON payload containing data for modifying the asset",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ModifyAssets"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "The asset was updated successfully",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "400": {
+                        "description": "Failed to update the asset due to validation errors or other issues",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
         "/health": {
             "get": {
                 "description": "Returns a simple health check response indicating the status of the service.",
@@ -158,6 +295,50 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dtos.ModifyAssets": {
+            "type": "object",
+            "required": [
+                "asset_type"
+            ],
+            "properties": {
+                "asset_type": {
+                    "type": "string",
+                    "enum": [
+                        "category",
+                        "amenity"
+                    ]
+                },
+                "icon_url": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.NewAssets": {
+            "type": "object",
+            "required": [
+                "asset_type",
+                "icon_url",
+                "name"
+            ],
+            "properties": {
+                "asset_type": {
+                    "type": "string",
+                    "enum": [
+                        "category",
+                        "amenity"
+                    ]
+                },
+                "icon_url": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "dtos.SignInDTO": {
             "type": "object",
             "required": [

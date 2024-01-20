@@ -11,6 +11,7 @@ type ICategoryService interface {
 	CreateCategory(category *models.Category) error
 	GetCategoryByID(categoryID uint) (*models.Category, error)
 	UpdateCategory(category *models.Category) error
+	DisableCategory(categoryID uint) error
 	DeleteCategory(categoryID uint) error
 }
 
@@ -40,6 +41,16 @@ func (s *CategoryService) UpdateCategory(category *models.Category) error {
 	}
 
 	return s.repo.UpdateCategory(category)
+}
+
+func (s *CategoryService) DisableCategory(categoryID uint) error {
+	// Check if the category exists
+	_, err := s.GetCategoryByID(categoryID)
+	if err != nil {
+		return err // Category not found
+	}
+
+	return s.repo.DisableCategory(categoryID)
 }
 
 func (s *CategoryService) DeleteCategory(categoryID uint) error {

@@ -13,6 +13,7 @@ import (
 type AuthenticatedUser struct {
 	Id    uint
 	Email string
+	Role  string
 }
 
 type JwtAuthGuard struct {
@@ -67,6 +68,7 @@ func (ag *JwtAuthGuard) AuthGuard(ctx *gin.Context) {
 	user := AuthenticatedUser{
 		Id:    uint(grpcRes.UserId),
 		Email: grpcRes.Email,
+		Role:  grpcRes.Role,
 	}
 
 	ctx.Set("user", user)

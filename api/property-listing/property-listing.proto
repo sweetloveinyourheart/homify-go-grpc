@@ -2,4 +2,38 @@ syntax = "proto3";
 
 option go_package = "github.com/Sweetloveinyourheart/micro/proto";
 
-service PropertyListing {}
+service PropertyListing {
+    rpc AddAsset(AddAssetRequest) returns (AddAssetResponse);
+    rpc ModifyAsset(ModifyAssetRequest) returns (ModifyAssetResponse);
+    rpc DisableAsset(DisableAssetRequest) returns (DisableAssetResponse);
+}
+
+message AddAssetRequest {
+    string assetType = 1;
+    string iconURL = 2;
+    string name = 3;
+}
+
+message AddAssetResponse {
+    bool success = 1;
+}
+
+message ModifyAssetRequest {
+    string assetType = 1;
+    uint32 id = 2;
+    string iconURL = 3;
+    string name = 4;
+}
+
+message ModifyAssetResponse {
+    bool success = 1;
+}
+
+message DisableAssetRequest {
+    string assetType = 1;
+    uint32 id = 2;
+}
+
+message DisableAssetResponse {
+    bool success = 1;
+}

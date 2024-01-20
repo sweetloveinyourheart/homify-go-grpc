@@ -27,7 +27,7 @@ func RunGRPCAuthenticationServer() {
 	srv := server.NewGRPCAuthenticationServer(db)
 	proto.RegisterAuthenticationServer(s, srv)
 
-	fmt.Println("Server is listening on port 50051...")
+	fmt.Printf("🚀 Authentication Server launched on port %s ... \n", configurations.TCPAddress)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

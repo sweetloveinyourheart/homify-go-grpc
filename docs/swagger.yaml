@@ -1,5 +1,35 @@
 basePath: /api/v1
 definitions:
+  dtos.ModifyAssets:
+    properties:
+      asset_type:
+        enum:
+        - category
+        - amenity
+        type: string
+      icon_url:
+        type: string
+      name:
+        type: string
+    required:
+    - asset_type
+    type: object
+  dtos.NewAssets:
+    properties:
+      asset_type:
+        enum:
+        - category
+        - amenity
+        type: string
+      icon_url:
+        type: string
+      name:
+        type: string
+    required:
+    - asset_type
+    - icon_url
+    - name
+    type: object
   dtos.SignInDTO:
     properties:
       email:
@@ -59,6 +89,96 @@ info:
   title: Homify API
   version: "1.0"
 paths:
+  /assets:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new asset based on the provided JSON payload.
+      operationId: addNewAsset
+      parameters:
+      - description: JSON payload containing data for the new asset
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.NewAssets'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: The asset was created successfully
+          schema:
+            type: object
+        "400":
+          description: Failed to create the new asset due to validation errors or
+            other issues
+          schema:
+            type: object
+      security:
+      - Authorization: []
+      summary: Create a new asset
+      tags:
+      - Assets
+  /assets/disable:
+    put:
+      description: Disables an existing asset based on the provided asset_id and asset_type.
+      operationId: disableAnAsset
+      parameters:
+      - description: Asset ID to be disabled
+        in: query
+        name: asset_id
+        required: true
+        type: string
+      - description: Type of the asset to be disabled
+        in: query
+        name: asset_type
+        required: true
+        type: string
+      responses:
+        "201":
+          description: The asset was disabled successfully
+          schema:
+            type: object
+        "400":
+          description: Failed to disable the asset due to validation errors or other
+            issues
+          schema:
+            type: object
+      security:
+      - Authorization: []
+      summary: Disable an existing asset
+      tags:
+      - Assets
+  /assets/modify:
+    post:
+      consumes:
+      - application/json
+      description: Modifies an existing asset based on the provided JSON payload.
+      operationId: modifyExistingAsset
+      parameters:
+      - description: JSON payload containing data for modifying the asset
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.ModifyAssets'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: The asset was updated successfully
+          schema:
+            type: object
+        "400":
+          description: Failed to update the asset due to validation errors or other
+            issues
+          schema:
+            type: object
+      security:
+      - Authorization: []
+      summary: Modify an existing asset
+      tags:
+      - Assets
   /health:
     get:
       description: Returns a simple health check response indicating the status of

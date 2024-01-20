@@ -10,6 +10,7 @@ import (
 type TokenPayload struct {
 	Id    uint
 	Email string
+	Role  string
 }
 
 func GenerateToken(payload TokenPayload, secretKey string, ttl time.Duration) (string, error) {
