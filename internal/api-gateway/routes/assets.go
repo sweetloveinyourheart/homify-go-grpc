@@ -19,7 +19,8 @@ func SetupAssetsHandler(
 	authGuard := jwtAuthGuard.AuthGuard
 
 	// routes
+	router.GET("/assets", assetsHandler.GetAssets)
 	router.POST("/assets", authGuard, middlewares.RoleGuard("admin"), assetsHandler.AddNewAsset)
-	router.POST("/assets/modify", authGuard, middlewares.RoleGuard("admin"), assetsHandler.ModifyExistingAsset)
+	router.PUT("/assets/modify", authGuard, middlewares.RoleGuard("admin"), assetsHandler.ModifyExistingAsset)
 	router.PUT("/assets/disable", authGuard, middlewares.RoleGuard("admin"), assetsHandler.DisableAnAsset)
 }

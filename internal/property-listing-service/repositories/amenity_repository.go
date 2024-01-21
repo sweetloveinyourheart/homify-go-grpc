@@ -12,7 +12,6 @@ type IAmenityRepository interface {
 	GetAmenityByID(id uint) (*models.Amenity, error)
 	GetAllCategories() ([]models.Amenity, error)
 	UpdateAmenity(amenity *models.Amenity) error
-	DisableAmenity(id uint) error
 	DeleteAmenity(id uint) error
 }
 
@@ -47,20 +46,6 @@ func (r *AmenityRepository) GetAllCategories() ([]models.Amenity, error) {
 
 // UpdateAmenity updates an existing amenity.
 func (r *AmenityRepository) UpdateAmenity(amenity *models.Amenity) error {
-	return r.db.Save(amenity).Error
-}
-
-// DisableAmenity disables a amenity by its ID.
-func (r *AmenityRepository) DisableAmenity(id uint) error {
-	var amenity models.Category
-
-	err := r.db.First(&amenity, id).Error
-	if err != nil {
-		return err
-	}
-
-	amenity.IsAvailable = false
-
 	return r.db.Save(amenity).Error
 }
 

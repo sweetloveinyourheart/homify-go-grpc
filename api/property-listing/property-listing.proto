@@ -4,8 +4,23 @@ option go_package = "github.com/Sweetloveinyourheart/micro/proto";
 
 service PropertyListing {
     rpc AddAsset(AddAssetRequest) returns (AddAssetResponse);
+    rpc GetAssets(GetAssetsRequest) returns (GetAssetsResponse);
     rpc ModifyAsset(ModifyAssetRequest) returns (ModifyAssetResponse);
     rpc DisableAsset(DisableAssetRequest) returns (DisableAssetResponse);
+}
+
+message GetAssetsRequest {
+    string assetType = 1;
+}
+
+message Assets {
+    uint32 Id = 1;
+    string iconURL = 2;
+    string name = 3;
+}
+
+message GetAssetsResponse {
+    repeated Assets assets = 1;
 }
 
 message AddAssetRequest {

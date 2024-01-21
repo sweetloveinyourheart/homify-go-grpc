@@ -8,11 +8,12 @@ import (
 )
 
 type IAmenityService interface {
-	CreateAmenity(category *models.Amenity) error
-	GetAmenityByID(categoryID uint) (*models.Amenity, error)
-	UpdateAmenity(category *models.Amenity) error
-	DisableAmenity(categoryID uint) error
-	DeleteAmenity(categoryID uint) error
+	CreateAmenity(amenity *models.Amenity) error
+	GetAmenities() ([]models.Amenity, error)
+	GetAmenityByID(amenityID uint) (*models.Amenity, error)
+	UpdateAmenity(amenityID uint, amenity *models.Amenity) error
+	DisableAmenity(amenityID uint) error
+	DeleteAmenity(amenityID uint) error
 }
 
 type AmenityService struct {
@@ -25,40 +26,56 @@ func NewAmenityService(db *gorm.DB) IAmenityService {
 	}
 }
 
-func (s *AmenityService) CreateAmenity(category *models.Amenity) error {
-	return s.repo.CreateAmenity(category)
+func (s *AmenityService) GetAmenities() ([]models.Amenity, error) {
+	return s.repo.GetAllCategories()
 }
 
-func (s *AmenityService) GetAmenityByID(categoryID uint) (*models.Amenity, error) {
-	return s.repo.GetAmenityByID(categoryID)
+func (s *AmenityService) CreateAmenity(amenity *models.Amenity) error {
+	return s.repo.CreateAmenity(amenity)
 }
 
-func (s *AmenityService) UpdateAmenity(category *models.Amenity) error {
-	// Check if the category exists
-	_, err := s.GetAmenityByID(category.ID)
+func (s *AmenityService) GetAmenityByID(amenityID uint) (*models.Amenity, error) {
+	return s.repo.GetAmenityByID(amenityID)
+}
+
+func (s *AmenityService) UpdateAmenity(amenityID uint, updateData *models.Amenity) error {
+	// Check if the amenity exists
+	amenity, err := s.GetAmenityByID(amenityID)
 	if err != nil {
 		return err // Amenity not found
 	}
 
-	return s.repo.UpdateAmenity(category)
+	if updateData.Name != "" {
+		amenity.Name = updateData.Name
+	}
+
+	if updateData.IconURL != "" {
+		amenity.IconURL = updateData.IconURL
+	}
+
+	amenity.ID = amenityID
+
+	return s.repo.UpdateAmenity(amenity)
 }
 
-func (s *AmenityService) DisableAmenity(categoryID uint) error {
-	// Check if the category exists
-	_, err := s.GetAmenityByID(categoryID)
+func (s *AmenityService) DisableAmenity(amenityID uint) error {
+	// Check if the amenity exists
+	amenity, err := s.GetAmenityByID(amenityID)
 	if err != nil {
 		return err // Amenity not found
 	}
 
-	return s.repo.DisableAmenity(categoryID)
+	amenity.IsAvailable = false
+
+	return s.repo.UpdateAmenity(amenity)
 }
 
-func (s *AmenityService) DeleteAmenity(categoryID uint) error {
-	// Check if the category exists
-	_, err := s.GetAmenityByID(categoryID)
+func (s *AmenityService) DeleteAmenity(amenityID uint) error {
+	// Check if the amenity exists
+	_, err := s.GetAmenityByID(amenityID)
 	if err != nil {
 		return err // Amenity not found
 	}
 
-	return s.repo.DeleteAmenity(categoryID)
+	return s.repo.DeleteAmenity(amenityID)
 }

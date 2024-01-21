@@ -12,7 +12,6 @@ type ICategoryRepository interface {
 	GetCategoryByID(id uint) (*models.Category, error)
 	GetAllCategories() ([]models.Category, error)
 	UpdateCategory(category *models.Category) error
-	DisableCategory(id uint) error
 	DeleteCategory(id uint) error
 }
 
@@ -47,20 +46,6 @@ func (r *CategoryRepository) GetAllCategories() ([]models.Category, error) {
 
 // UpdateCategory updates an existing category.
 func (r *CategoryRepository) UpdateCategory(category *models.Category) error {
-	return r.db.Save(category).Error
-}
-
-// DeleteCategory disables a category by its ID.
-func (r *CategoryRepository) DisableCategory(id uint) error {
-	var category models.Category
-
-	err := r.db.First(&category, id).Error
-	if err != nil {
-		return err
-	}
-
-	category.IsAvailable = false
-
 	return r.db.Save(category).Error
 }
 

@@ -19,6 +19,43 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/assets": {
+            "get": {
+                "description": "Get assets based on the provided asset type",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Assets",
+                    "assets"
+                ],
+                "summary": "Get assets by asset type",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Asset type to filter by",
+                        "name": "asset_type",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The assets list",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "400": {
+                        "description": "Error",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -110,7 +147,7 @@ const docTemplate = `{
             }
         },
         "/assets/modify": {
-            "post": {
+            "put": {
                 "security": [
                     {
                         "Authorization": []
@@ -129,6 +166,13 @@ const docTemplate = `{
                 "summary": "Modify an existing asset",
                 "operationId": "modifyExistingAsset",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Asset id to modify",
+                        "name": "asset_id",
+                        "in": "query",
+                        "required": true
+                    },
                     {
                         "description": "JSON payload containing data for modifying the asset",
                         "name": "input",

@@ -90,6 +90,31 @@ info:
   version: "1.0"
 paths:
   /assets:
+    get:
+      consumes:
+      - application/json
+      description: Get assets based on the provided asset type
+      parameters:
+      - description: Asset type to filter by
+        in: query
+        name: asset_type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: The assets list
+          schema:
+            type: object
+        "400":
+          description: Error
+          schema:
+            type: object
+      summary: Get assets by asset type
+      tags:
+      - Assets
+      - assets
     post:
       consumes:
       - application/json
@@ -150,12 +175,17 @@ paths:
       tags:
       - Assets
   /assets/modify:
-    post:
+    put:
       consumes:
       - application/json
       description: Modifies an existing asset based on the provided JSON payload.
       operationId: modifyExistingAsset
       parameters:
+      - description: Asset id to modify
+        in: query
+        name: asset_id
+        required: true
+        type: string
       - description: JSON payload containing data for modifying the asset
         in: body
         name: input

@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PropertyListingClient interface {
 	AddAsset(ctx context.Context, in *AddAssetRequest, opts ...grpc.CallOption) (*AddAssetResponse, error)
+	GetAssets(ctx context.Context, in *GetAssetsRequest, opts ...grpc.CallOption) (*GetAssetsResponse, error)
 	ModifyAsset(ctx context.Context, in *ModifyAssetRequest, opts ...grpc.CallOption) (*ModifyAssetResponse, error)
 	DisableAsset(ctx context.Context, in *DisableAssetRequest, opts ...grpc.CallOption) (*DisableAssetResponse, error)
 }
@@ -38,6 +39,15 @@ func NewPropertyListingClient(cc grpc.ClientConnInterface) PropertyListingClient
 func (c *propertyListingClient) AddAsset(ctx context.Context, in *AddAssetRequest, opts ...grpc.CallOption) (*AddAssetResponse, error) {
 	out := new(AddAssetResponse)
 	err := c.cc.Invoke(ctx, "/PropertyListing/AddAsset", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *propertyListingClient) GetAssets(ctx context.Context, in *GetAssetsRequest, opts ...grpc.CallOption) (*GetAssetsResponse, error) {
+	out := new(GetAssetsResponse)
+	err := c.cc.Invoke(ctx, "/PropertyListing/GetAssets", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -67,6 +77,7 @@ func (c *propertyListingClient) DisableAsset(ctx context.Context, in *DisableAss
 // for forward compatibility
 type PropertyListingServer interface {
 	AddAsset(context.Context, *AddAssetRequest) (*AddAssetResponse, error)
+	GetAssets(context.Context, *GetAssetsRequest) (*GetAssetsResponse, error)
 	ModifyAsset(context.Context, *ModifyAssetRequest) (*ModifyAssetResponse, error)
 	DisableAsset(context.Context, *DisableAssetRequest) (*DisableAssetResponse, error)
 	mustEmbedUnimplementedPropertyListingServer()
@@ -78,6 +89,9 @@ type UnimplementedPropertyListingServer struct {
 
 func (UnimplementedPropertyListingServer) AddAsset(context.Context, *AddAssetRequest) (*AddAssetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddAsset not implemented")
+}
+func (UnimplementedPropertyListingServer) GetAssets(context.Context, *GetAssetsRequest) (*GetAssetsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAssets not implemented")
 }
 func (UnimplementedPropertyListingServer) ModifyAsset(context.Context, *ModifyAssetRequest) (*ModifyAssetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ModifyAsset not implemented")
@@ -112,6 +126,24 @@ func _PropertyListing_AddAsset_Handler(srv interface{}, ctx context.Context, dec
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PropertyListingServer).AddAsset(ctx, req.(*AddAssetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PropertyListing_GetAssets_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAssetsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PropertyListingServer).GetAssets(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/PropertyListing/GetAssets",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PropertyListingServer).GetAssets(ctx, req.(*GetAssetsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -162,6 +194,10 @@ var PropertyListing_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddAsset",
 			Handler:    _PropertyListing_AddAsset_Handler,
+		},
+		{
+			MethodName: "GetAssets",
+			Handler:    _PropertyListing_GetAssets_Handler,
 		},
 		{
 			MethodName: "ModifyAsset",

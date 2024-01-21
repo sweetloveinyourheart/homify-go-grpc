@@ -24,6 +24,43 @@ func NewAssetsHandler(c proto.PropertyListingClient, validate *validator.Validat
 	}
 }
 
+// GetAssets godoc
+// @Tags Assets
+// @Summary Get assets by asset type
+// @Description Get assets based on the provided asset type
+// @Tags assets
+// @Accept json
+// @Produce json
+// @Param asset_type query string true "Asset type to filter by"
+// @Success 200 {object} interface{} "The assets list"
+// @Failure 400 {object} interface{} "Error"
+// @Router /assets [get]
+func (h *AssetsHandler) GetAssets(ctx *gin.Context) {
+	assetType := ctx.Query("asset_type")
+	if assetType == "" {
+		ctx.JSON(400, gin.H{"error": "must provide asset_type on query params"})
+		return
+	}
+
+	assetsCtx := context.Background()
+
+	grpcReq := &proto.GetAssetsRequest{
+		AssetType: assetType,
+	}
+
+	grpcRes, err := h.grpcClient.GetAssets(assetsCtx, grpcReq)
+	if err != nil {
+		log.Printf("Get assets thrown error: %v", err)
+		ctx.JSON(400, gin.H{"error": "Get assets failed"})
+		return
+	}
+
+	ctx.JSON(200, gin.H{
+		"message": "Success",
+		"data":    grpcRes,
+	})
+}
+
 // AddNewAsset handles the creation of a new asset.
 // @Tags Assets
 // @Summary Create a new asset
@@ -49,7 +86,7 @@ func (h *AssetsHandler) AddNewAsset(ctx *gin.Context) {
 		return
 	}
 
-	authCtx := context.Background()
+	assetsCtx := context.Background()
 
 	grpcReq := &proto.AddAssetRequest{
 		AssetType: newAssetData.AssetType,
@@ -57,7 +94,7 @@ func (h *AssetsHandler) AddNewAsset(ctx *gin.Context) {
 		Name:      newAssetData.Name,
 	}
 
-	grpcRes, err := h.grpcClient.AddAsset(authCtx, grpcReq)
+	grpcRes, err := h.grpcClient.AddAsset(assetsCtx, grpcReq)
 	if err != nil {
 		log.Printf("New asset thrown error: %v", err)
 		ctx.JSON(400, gin.H{"error": "Create new asset failed"})
@@ -83,14 +120,27 @@ func (h *AssetsHandler) AddNewAsset(ctx *gin.Context) {
 // @Summary Modify an existing asset
 // @Description Modifies an existing asset based on the provided JSON payload.
 // @ID modifyExistingAsset
+// @Param asset_id query string true "Asset id to modify"
 // @Accept json
 // @Security Authorization
 // @Produce json
 // @Param input body dtos.ModifyAssets true "JSON payload containing data for modifying the asset"
 // @Success 201 {object} interface{} "The asset was updated successfully"
 // @Failure 400 {object} interface{} "Failed to update the asset due to validation errors or other issues"
-// @Router /assets/modify [post]
+// @Router /assets/modify [put]
 func (h *AssetsHandler) ModifyExistingAsset(ctx *gin.Context) {
+	assetId := ctx.Query("asset_id")
+	if assetId == "" {
+		ctx.JSON(400, gin.H{"error": "must provide asset_id"})
+		return
+	}
+
+	assetIdUint, parseErr := strconv.ParseUint(assetId, 10, 32)
+	if parseErr != nil {
+		ctx.JSON(400, gin.H{"error": "asset_id has invalid format"})
+		return
+	}
+
 	modifyAssetData := dtos.ModifyAssets{}
 	if bindError := ctx.ShouldBindJSON(&modifyAssetData); bindError != nil {
 		ctx.JSON(400, gin.H{"error": bindError.Error()})
@@ -103,15 +153,16 @@ func (h *AssetsHandler) ModifyExistingAsset(ctx *gin.Context) {
 		return
 	}
 
-	authCtx := context.Background()
+	assetsCtx := context.Background()
 
-	grpcReq := &proto.AddAssetRequest{
+	grpcReq := &proto.ModifyAssetRequest{
+		Id:        uint32(assetIdUint),
 		AssetType: modifyAssetData.AssetType,
 		IconURL:   modifyAssetData.IconURL,
 		Name:      modifyAssetData.Name,
 	}
 
-	grpcRes, err := h.grpcClient.AddAsset(authCtx, grpcReq)
+	grpcRes, err := h.grpcClient.ModifyAsset(assetsCtx, grpcReq)
 	if err != nil {
 		log.Printf("Update asset thrown error: %v", err)
 		ctx.JSON(400, gin.H{"error": "Update new asset failed"})
@@ -152,7 +203,7 @@ func (h *AssetsHandler) DisableAnAsset(ctx *gin.Context) {
 		return
 	}
 
-	authCtx := context.Background()
+	assetsCtx := context.Background()
 
 	assetIdUint, parseErr := strconv.ParseUint(assetId, 10, 32)
 	if parseErr != nil {
@@ -165,7 +216,7 @@ func (h *AssetsHandler) DisableAnAsset(ctx *gin.Context) {
 		AssetType: assetType,
 	}
 
-	grpcRes, err := h.grpcClient.DisableAsset(authCtx, grpcReq)
+	grpcRes, err := h.grpcClient.DisableAsset(assetsCtx, grpcReq)
 	if err != nil {
 		log.Printf("Update asset thrown error: %v", err)
 		ctx.JSON(400, gin.H{"error": "Update new asset failed"})

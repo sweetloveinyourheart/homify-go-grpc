@@ -20,6 +20,163 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type GetAssetsRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	AssetType string `protobuf:"bytes,1,opt,name=assetType,proto3" json:"assetType,omitempty"`
+}
+
+func (x *GetAssetsRequest) Reset() {
+	*x = GetAssetsRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_property_listing_property_listing_proto_msgTypes[0]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAssetsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAssetsRequest) ProtoMessage() {}
+
+func (x *GetAssetsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_property_listing_property_listing_proto_msgTypes[0]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAssetsRequest.ProtoReflect.Descriptor instead.
+func (*GetAssetsRequest) Descriptor() ([]byte, []int) {
+	return file_property_listing_property_listing_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *GetAssetsRequest) GetAssetType() string {
+	if x != nil {
+		return x.AssetType
+	}
+	return ""
+}
+
+type Assets struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id      uint32 `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty"`
+	IconURL string `protobuf:"bytes,2,opt,name=iconURL,proto3" json:"iconURL,omitempty"`
+	Name    string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+}
+
+func (x *Assets) Reset() {
+	*x = Assets{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_property_listing_property_listing_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Assets) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Assets) ProtoMessage() {}
+
+func (x *Assets) ProtoReflect() protoreflect.Message {
+	mi := &file_property_listing_property_listing_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Assets.ProtoReflect.Descriptor instead.
+func (*Assets) Descriptor() ([]byte, []int) {
+	return file_property_listing_property_listing_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *Assets) GetId() uint32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *Assets) GetIconURL() string {
+	if x != nil {
+		return x.IconURL
+	}
+	return ""
+}
+
+func (x *Assets) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type GetAssetsResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Assets []*Assets `protobuf:"bytes,1,rep,name=assets,proto3" json:"assets,omitempty"`
+}
+
+func (x *GetAssetsResponse) Reset() {
+	*x = GetAssetsResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_property_listing_property_listing_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAssetsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAssetsResponse) ProtoMessage() {}
+
+func (x *GetAssetsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_property_listing_property_listing_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAssetsResponse.ProtoReflect.Descriptor instead.
+func (*GetAssetsResponse) Descriptor() ([]byte, []int) {
+	return file_property_listing_property_listing_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *GetAssetsResponse) GetAssets() []*Assets {
+	if x != nil {
+		return x.Assets
+	}
+	return nil
+}
+
 type AddAssetRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -33,7 +190,7 @@ type AddAssetRequest struct {
 func (x *AddAssetRequest) Reset() {
 	*x = AddAssetRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_property_listing_property_listing_proto_msgTypes[0]
+		mi := &file_property_listing_property_listing_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -46,7 +203,7 @@ func (x *AddAssetRequest) String() string {
 func (*AddAssetRequest) ProtoMessage() {}
 
 func (x *AddAssetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_property_listing_property_listing_proto_msgTypes[0]
+	mi := &file_property_listing_property_listing_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -59,7 +216,7 @@ func (x *AddAssetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddAssetRequest.ProtoReflect.Descriptor instead.
 func (*AddAssetRequest) Descriptor() ([]byte, []int) {
-	return file_property_listing_property_listing_proto_rawDescGZIP(), []int{0}
+	return file_property_listing_property_listing_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *AddAssetRequest) GetAssetType() string {
@@ -94,7 +251,7 @@ type AddAssetResponse struct {
 func (x *AddAssetResponse) Reset() {
 	*x = AddAssetResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_property_listing_property_listing_proto_msgTypes[1]
+		mi := &file_property_listing_property_listing_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -107,7 +264,7 @@ func (x *AddAssetResponse) String() string {
 func (*AddAssetResponse) ProtoMessage() {}
 
 func (x *AddAssetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_property_listing_property_listing_proto_msgTypes[1]
+	mi := &file_property_listing_property_listing_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -120,7 +277,7 @@ func (x *AddAssetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddAssetResponse.ProtoReflect.Descriptor instead.
 func (*AddAssetResponse) Descriptor() ([]byte, []int) {
-	return file_property_listing_property_listing_proto_rawDescGZIP(), []int{1}
+	return file_property_listing_property_listing_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *AddAssetResponse) GetSuccess() bool {
@@ -144,7 +301,7 @@ type ModifyAssetRequest struct {
 func (x *ModifyAssetRequest) Reset() {
 	*x = ModifyAssetRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_property_listing_property_listing_proto_msgTypes[2]
+		mi := &file_property_listing_property_listing_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -157,7 +314,7 @@ func (x *ModifyAssetRequest) String() string {
 func (*ModifyAssetRequest) ProtoMessage() {}
 
 func (x *ModifyAssetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_property_listing_property_listing_proto_msgTypes[2]
+	mi := &file_property_listing_property_listing_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -170,7 +327,7 @@ func (x *ModifyAssetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ModifyAssetRequest.ProtoReflect.Descriptor instead.
 func (*ModifyAssetRequest) Descriptor() ([]byte, []int) {
-	return file_property_listing_property_listing_proto_rawDescGZIP(), []int{2}
+	return file_property_listing_property_listing_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ModifyAssetRequest) GetAssetType() string {
@@ -212,7 +369,7 @@ type ModifyAssetResponse struct {
 func (x *ModifyAssetResponse) Reset() {
 	*x = ModifyAssetResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_property_listing_property_listing_proto_msgTypes[3]
+		mi := &file_property_listing_property_listing_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -225,7 +382,7 @@ func (x *ModifyAssetResponse) String() string {
 func (*ModifyAssetResponse) ProtoMessage() {}
 
 func (x *ModifyAssetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_property_listing_property_listing_proto_msgTypes[3]
+	mi := &file_property_listing_property_listing_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -238,7 +395,7 @@ func (x *ModifyAssetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ModifyAssetResponse.ProtoReflect.Descriptor instead.
 func (*ModifyAssetResponse) Descriptor() ([]byte, []int) {
-	return file_property_listing_property_listing_proto_rawDescGZIP(), []int{3}
+	return file_property_listing_property_listing_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ModifyAssetResponse) GetSuccess() bool {
@@ -260,7 +417,7 @@ type DisableAssetRequest struct {
 func (x *DisableAssetRequest) Reset() {
 	*x = DisableAssetRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_property_listing_property_listing_proto_msgTypes[4]
+		mi := &file_property_listing_property_listing_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -273,7 +430,7 @@ func (x *DisableAssetRequest) String() string {
 func (*DisableAssetRequest) ProtoMessage() {}
 
 func (x *DisableAssetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_property_listing_property_listing_proto_msgTypes[4]
+	mi := &file_property_listing_property_listing_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -286,7 +443,7 @@ func (x *DisableAssetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DisableAssetRequest.ProtoReflect.Descriptor instead.
 func (*DisableAssetRequest) Descriptor() ([]byte, []int) {
-	return file_property_listing_property_listing_proto_rawDescGZIP(), []int{4}
+	return file_property_listing_property_listing_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *DisableAssetRequest) GetAssetType() string {
@@ -314,7 +471,7 @@ type DisableAssetResponse struct {
 func (x *DisableAssetResponse) Reset() {
 	*x = DisableAssetResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_property_listing_property_listing_proto_msgTypes[5]
+		mi := &file_property_listing_property_listing_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -327,7 +484,7 @@ func (x *DisableAssetResponse) String() string {
 func (*DisableAssetResponse) ProtoMessage() {}
 
 func (x *DisableAssetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_property_listing_property_listing_proto_msgTypes[5]
+	mi := &file_property_listing_property_listing_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -340,7 +497,7 @@ func (x *DisableAssetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DisableAssetResponse.ProtoReflect.Descriptor instead.
 func (*DisableAssetResponse) Descriptor() ([]byte, []int) {
-	return file_property_listing_property_listing_proto_rawDescGZIP(), []int{5}
+	return file_property_listing_property_listing_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *DisableAssetResponse) GetSuccess() bool {
@@ -355,7 +512,18 @@ var File_property_listing_property_listing_proto protoreflect.FileDescriptor
 var file_property_listing_property_listing_proto_rawDesc = []byte{
 	0x0a, 0x27, 0x70, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74, 0x79, 0x2d, 0x6c, 0x69, 0x73, 0x74, 0x69,
 	0x6e, 0x67, 0x2f, 0x70, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74, 0x79, 0x2d, 0x6c, 0x69, 0x73, 0x74,
-	0x69, 0x6e, 0x67, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x5d, 0x0a, 0x0f, 0x41, 0x64, 0x64,
+	0x69, 0x6e, 0x67, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x30, 0x0a, 0x10, 0x47, 0x65, 0x74,
+	0x41, 0x73, 0x73, 0x65, 0x74, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1c, 0x0a,
+	0x09, 0x61, 0x73, 0x73, 0x65, 0x74, 0x54, 0x79, 0x70, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x09, 0x61, 0x73, 0x73, 0x65, 0x74, 0x54, 0x79, 0x70, 0x65, 0x22, 0x46, 0x0a, 0x06, 0x41,
+	0x73, 0x73, 0x65, 0x74, 0x73, 0x12, 0x0e, 0x0a, 0x02, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x0d, 0x52, 0x02, 0x49, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x69, 0x63, 0x6f, 0x6e, 0x55, 0x52, 0x4c,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x69, 0x63, 0x6f, 0x6e, 0x55, 0x52, 0x4c, 0x12,
+	0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e,
+	0x61, 0x6d, 0x65, 0x22, 0x34, 0x0a, 0x11, 0x47, 0x65, 0x74, 0x41, 0x73, 0x73, 0x65, 0x74, 0x73,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1f, 0x0a, 0x06, 0x61, 0x73, 0x73, 0x65,
+	0x74, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x07, 0x2e, 0x41, 0x73, 0x73, 0x65, 0x74,
+	0x73, 0x52, 0x06, 0x61, 0x73, 0x73, 0x65, 0x74, 0x73, 0x22, 0x5d, 0x0a, 0x0f, 0x41, 0x64, 0x64,
 	0x41, 0x73, 0x73, 0x65, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1c, 0x0a, 0x09,
 	0x61, 0x73, 0x73, 0x65, 0x74, 0x54, 0x79, 0x70, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
 	0x09, 0x61, 0x73, 0x73, 0x65, 0x74, 0x54, 0x79, 0x70, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x69, 0x63,
@@ -382,22 +550,25 @@ var file_property_listing_property_listing_proto_rawDesc = []byte{
 	0x0a, 0x14, 0x44, 0x69, 0x73, 0x61, 0x62, 0x6c, 0x65, 0x41, 0x73, 0x73, 0x65, 0x74, 0x52, 0x65,
 	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x73, 0x75, 0x63, 0x63, 0x65, 0x73,
 	0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x73, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73,
-	0x32, 0xb9, 0x01, 0x0a, 0x0f, 0x50, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74, 0x79, 0x4c, 0x69, 0x73,
+	0x32, 0xed, 0x01, 0x0a, 0x0f, 0x50, 0x72, 0x6f, 0x70, 0x65, 0x72, 0x74, 0x79, 0x4c, 0x69, 0x73,
 	0x74, 0x69, 0x6e, 0x67, 0x12, 0x2f, 0x0a, 0x08, 0x41, 0x64, 0x64, 0x41, 0x73, 0x73, 0x65, 0x74,
 	0x12, 0x10, 0x2e, 0x41, 0x64, 0x64, 0x41, 0x73, 0x73, 0x65, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65,
 	0x73, 0x74, 0x1a, 0x11, 0x2e, 0x41, 0x64, 0x64, 0x41, 0x73, 0x73, 0x65, 0x74, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x38, 0x0a, 0x0b, 0x4d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x41,
-	0x73, 0x73, 0x65, 0x74, 0x12, 0x13, 0x2e, 0x4d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x41, 0x73, 0x73,
-	0x65, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x14, 0x2e, 0x4d, 0x6f, 0x64, 0x69,
-	0x66, 0x79, 0x41, 0x73, 0x73, 0x65, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
-	0x3b, 0x0a, 0x0c, 0x44, 0x69, 0x73, 0x61, 0x62, 0x6c, 0x65, 0x41, 0x73, 0x73, 0x65, 0x74, 0x12,
-	0x14, 0x2e, 0x44, 0x69, 0x73, 0x61, 0x62, 0x6c, 0x65, 0x41, 0x73, 0x73, 0x65, 0x74, 0x52, 0x65,
-	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x15, 0x2e, 0x44, 0x69, 0x73, 0x61, 0x62, 0x6c, 0x65, 0x41,
-	0x73, 0x73, 0x65, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x2d, 0x5a, 0x2b,
-	0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x53, 0x77, 0x65, 0x65, 0x74,
-	0x6c, 0x6f, 0x76, 0x65, 0x69, 0x6e, 0x79, 0x6f, 0x75, 0x72, 0x68, 0x65, 0x61, 0x72, 0x74, 0x2f,
-	0x6d, 0x69, 0x63, 0x72, 0x6f, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x32, 0x0a, 0x09, 0x47, 0x65, 0x74, 0x41, 0x73, 0x73, 0x65,
+	0x74, 0x73, 0x12, 0x11, 0x2e, 0x47, 0x65, 0x74, 0x41, 0x73, 0x73, 0x65, 0x74, 0x73, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x12, 0x2e, 0x47, 0x65, 0x74, 0x41, 0x73, 0x73, 0x65, 0x74,
+	0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x38, 0x0a, 0x0b, 0x4d, 0x6f, 0x64,
+	0x69, 0x66, 0x79, 0x41, 0x73, 0x73, 0x65, 0x74, 0x12, 0x13, 0x2e, 0x4d, 0x6f, 0x64, 0x69, 0x66,
+	0x79, 0x41, 0x73, 0x73, 0x65, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x14, 0x2e,
+	0x4d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x41, 0x73, 0x73, 0x65, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x12, 0x3b, 0x0a, 0x0c, 0x44, 0x69, 0x73, 0x61, 0x62, 0x6c, 0x65, 0x41, 0x73,
+	0x73, 0x65, 0x74, 0x12, 0x14, 0x2e, 0x44, 0x69, 0x73, 0x61, 0x62, 0x6c, 0x65, 0x41, 0x73, 0x73,
+	0x65, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x15, 0x2e, 0x44, 0x69, 0x73, 0x61,
+	0x62, 0x6c, 0x65, 0x41, 0x73, 0x73, 0x65, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x42, 0x2d, 0x5a, 0x2b, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x53,
+	0x77, 0x65, 0x65, 0x74, 0x6c, 0x6f, 0x76, 0x65, 0x69, 0x6e, 0x79, 0x6f, 0x75, 0x72, 0x68, 0x65,
+	0x61, 0x72, 0x74, 0x2f, 0x6d, 0x69, 0x63, 0x72, 0x6f, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -412,27 +583,33 @@ func file_property_listing_property_listing_proto_rawDescGZIP() []byte {
 	return file_property_listing_property_listing_proto_rawDescData
 }
 
-var file_property_listing_property_listing_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_property_listing_property_listing_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_property_listing_property_listing_proto_goTypes = []interface{}{
-	(*AddAssetRequest)(nil),      // 0: AddAssetRequest
-	(*AddAssetResponse)(nil),     // 1: AddAssetResponse
-	(*ModifyAssetRequest)(nil),   // 2: ModifyAssetRequest
-	(*ModifyAssetResponse)(nil),  // 3: ModifyAssetResponse
-	(*DisableAssetRequest)(nil),  // 4: DisableAssetRequest
-	(*DisableAssetResponse)(nil), // 5: DisableAssetResponse
+	(*GetAssetsRequest)(nil),     // 0: GetAssetsRequest
+	(*Assets)(nil),               // 1: Assets
+	(*GetAssetsResponse)(nil),    // 2: GetAssetsResponse
+	(*AddAssetRequest)(nil),      // 3: AddAssetRequest
+	(*AddAssetResponse)(nil),     // 4: AddAssetResponse
+	(*ModifyAssetRequest)(nil),   // 5: ModifyAssetRequest
+	(*ModifyAssetResponse)(nil),  // 6: ModifyAssetResponse
+	(*DisableAssetRequest)(nil),  // 7: DisableAssetRequest
+	(*DisableAssetResponse)(nil), // 8: DisableAssetResponse
 }
 var file_property_listing_property_listing_proto_depIdxs = []int32{
-	0, // 0: PropertyListing.AddAsset:input_type -> AddAssetRequest
-	2, // 1: PropertyListing.ModifyAsset:input_type -> ModifyAssetRequest
-	4, // 2: PropertyListing.DisableAsset:input_type -> DisableAssetRequest
-	1, // 3: PropertyListing.AddAsset:output_type -> AddAssetResponse
-	3, // 4: PropertyListing.ModifyAsset:output_type -> ModifyAssetResponse
-	5, // 5: PropertyListing.DisableAsset:output_type -> DisableAssetResponse
-	3, // [3:6] is the sub-list for method output_type
-	0, // [0:3] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: GetAssetsResponse.assets:type_name -> Assets
+	3, // 1: PropertyListing.AddAsset:input_type -> AddAssetRequest
+	0, // 2: PropertyListing.GetAssets:input_type -> GetAssetsRequest
+	5, // 3: PropertyListing.ModifyAsset:input_type -> ModifyAssetRequest
+	7, // 4: PropertyListing.DisableAsset:input_type -> DisableAssetRequest
+	4, // 5: PropertyListing.AddAsset:output_type -> AddAssetResponse
+	2, // 6: PropertyListing.GetAssets:output_type -> GetAssetsResponse
+	6, // 7: PropertyListing.ModifyAsset:output_type -> ModifyAssetResponse
+	8, // 8: PropertyListing.DisableAsset:output_type -> DisableAssetResponse
+	5, // [5:9] is the sub-list for method output_type
+	1, // [1:5] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_property_listing_property_listing_proto_init() }
@@ -442,7 +619,7 @@ func file_property_listing_property_listing_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_property_listing_property_listing_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AddAssetRequest); i {
+			switch v := v.(*GetAssetsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -454,7 +631,7 @@ func file_property_listing_property_listing_proto_init() {
 			}
 		}
 		file_property_listing_property_listing_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AddAssetResponse); i {
+			switch v := v.(*Assets); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -466,7 +643,7 @@ func file_property_listing_property_listing_proto_init() {
 			}
 		}
 		file_property_listing_property_listing_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ModifyAssetRequest); i {
+			switch v := v.(*GetAssetsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -478,7 +655,7 @@ func file_property_listing_property_listing_proto_init() {
 			}
 		}
 		file_property_listing_property_listing_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ModifyAssetResponse); i {
+			switch v := v.(*AddAssetRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -490,7 +667,7 @@ func file_property_listing_property_listing_proto_init() {
 			}
 		}
 		file_property_listing_property_listing_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DisableAssetRequest); i {
+			switch v := v.(*AddAssetResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -502,6 +679,42 @@ func file_property_listing_property_listing_proto_init() {
 			}
 		}
 		file_property_listing_property_listing_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ModifyAssetRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_property_listing_property_listing_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ModifyAssetResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_property_listing_property_listing_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DisableAssetRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_property_listing_property_listing_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DisableAssetResponse); i {
 			case 0:
 				return &v.state
@@ -520,7 +733,7 @@ func file_property_listing_property_listing_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_property_listing_property_listing_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
