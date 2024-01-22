@@ -3,11 +3,21 @@ syntax = "proto3";
 option go_package = "github.com/Sweetloveinyourheart/micro/proto";
 
 service PropertyListing {
-    rpc AddAsset(AddAssetRequest) returns (AddAssetResponse);
     rpc GetAssets(GetAssetsRequest) returns (GetAssetsResponse);
-    rpc ModifyAsset(ModifyAssetRequest) returns (ModifyAssetResponse);
-    rpc DisableAsset(DisableAssetRequest) returns (DisableAssetResponse);
+    rpc AddAsset(AddAssetRequest) returns (ResultResponse);
+    rpc ModifyAsset(ModifyAssetRequest) returns (ResultResponse);
+    rpc DisableAsset(DisableAssetRequest) returns (ResultResponse);
+
+    rpc AddProperty(NewProperty) returns (ResultResponse);
 }
+
+// Common
+
+message ResultResponse {
+    bool success = 1;
+}
+
+// Assets
 
 message GetAssetsRequest {
     string assetType = 1;
@@ -29,10 +39,6 @@ message AddAssetRequest {
     string name = 3;
 }
 
-message AddAssetResponse {
-    bool success = 1;
-}
-
 message ModifyAssetRequest {
     string assetType = 1;
     uint32 id = 2;
@@ -40,15 +46,25 @@ message ModifyAssetRequest {
     string name = 4;
 }
 
-message ModifyAssetResponse {
-    bool success = 1;
-}
-
 message DisableAssetRequest {
     string assetType = 1;
     uint32 id = 2;
 }
 
-message DisableAssetResponse {
-    bool success = 1;
+// Property
+
+message NewDestination {
+    string country = 1;
+    string city = 2;
+    float latitude = 3;
+    float longitude = 4;
+}
+
+message NewProperty {
+    string title = 1;
+    string description = 2;
+    float price = 3;
+    uint32 category_id = 4;
+    uint32 amenity_id = 5;
+    NewDestination destination = 6;
 }

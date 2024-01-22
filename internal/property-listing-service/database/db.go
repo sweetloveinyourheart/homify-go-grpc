@@ -39,7 +39,7 @@ func MigrateDatabase(db *gorm.DB) {
 		&models.Amenity{},
 		&models.Category{},
 		&models.Destination{},
-		&models.Listing{},
+		&models.Property{},
 	)
 
 	if err != nil {

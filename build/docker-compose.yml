@@ -31,6 +31,26 @@ services:
     volumes:
       - homify-property-listing-data:/var/lib/postgresql/data
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    environment:
+      - discovery.type=single-node
+    networks:
+      - homify-network
+    ports:
+      - "9200:9200"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.10.0
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    networks:
+      - homify-network
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
 networks:
   homify-network:
     driver: bridge

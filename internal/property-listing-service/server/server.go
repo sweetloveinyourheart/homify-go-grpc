@@ -13,19 +13,19 @@ import (
 type GRPCPropertyListingServer struct {
 	amenitySvc  services.IAmenityService
 	categorySvc services.ICategoryService
-	listingSvc  services.IPropertyListingService
+	propertySvc services.IPropertyListingService
 	proto.UnimplementedPropertyListingServer
 }
 
 func NewGRPCPropertyListingServer(db *gorm.DB) *GRPCPropertyListingServer {
 	amenitySvc := services.NewAmenityService(db)
 	categorySvc := services.NewCategoryService(db)
-	listingSvc := services.NewPropertyListingService(db)
+	propertySvc := services.NewPropertyListingService(db)
 
 	return &GRPCPropertyListingServer{
 		amenitySvc:  amenitySvc,
 		categorySvc: categorySvc,
-		listingSvc:  listingSvc,
+		propertySvc: propertySvc,
 	}
 }
 
@@ -33,6 +33,14 @@ const (
 	CATEGORY_ASSET_TYPE = "category"
 	AMENITY_ASSET_TYPE  = "amenity"
 )
+
+// Property handlers
+
+func (s *GRPCPropertyListingServer) AddProperty(ctx context.Context, req *proto.NewProperty) (*proto.ResultResponse, error) {
+	return &proto.ResultResponse{Success: true}, nil
+}
+
+// Assets handlers
 
 func (s *GRPCPropertyListingServer) GetAssets(ctx context.Context, req *proto.GetAssetsRequest) (*proto.GetAssetsResponse, error) {
 	if req.AssetType == CATEGORY_ASSET_TYPE {
@@ -86,7 +94,7 @@ func (s *GRPCPropertyListingServer) GetAssets(ctx context.Context, req *proto.Ge
 	return &proto.GetAssetsResponse{}, nil
 }
 
-func (s *GRPCPropertyListingServer) AddAsset(ctx context.Context, req *proto.AddAssetRequest) (*proto.AddAssetResponse, error) {
+func (s *GRPCPropertyListingServer) AddAsset(ctx context.Context, req *proto.AddAssetRequest) (*proto.ResultResponse, error) {
 	if req.AssetType == CATEGORY_ASSET_TYPE {
 		err := s.categorySvc.CreateCategory(&models.Category{
 			Name:    req.Name,
@@ -94,10 +102,10 @@ func (s *GRPCPropertyListingServer) AddAsset(ctx context.Context, req *proto.Add
 		})
 
 		if err != nil {
-			return &proto.AddAssetResponse{Success: false}, err
+			return &proto.ResultResponse{Success: false}, err
 		}
 
-		return &proto.AddAssetResponse{Success: true}, nil
+		return &proto.ResultResponse{Success: true}, nil
 	}
 
 	if req.AssetType == AMENITY_ASSET_TYPE {
@@ -107,16 +115,16 @@ func (s *GRPCPropertyListingServer) AddAsset(ctx context.Context, req *proto.Add
 		})
 
 		if err != nil {
-			return &proto.AddAssetResponse{Success: false}, err
+			return &proto.ResultResponse{Success: false}, err
 		}
 
-		return &proto.AddAssetResponse{Success: true}, nil
+		return &proto.ResultResponse{Success: true}, nil
 	}
 
-	return &proto.AddAssetResponse{Success: false}, fmt.Errorf("invalid asset type")
+	return &proto.ResultResponse{Success: false}, fmt.Errorf("invalid asset type")
 }
 
-func (s *GRPCPropertyListingServer) ModifyAsset(ctx context.Context, req *proto.ModifyAssetRequest) (*proto.ModifyAssetResponse, error) {
+func (s *GRPCPropertyListingServer) ModifyAsset(ctx context.Context, req *proto.ModifyAssetRequest) (*proto.ResultResponse, error) {
 	if req.AssetType == CATEGORY_ASSET_TYPE {
 		err := s.categorySvc.UpdateCategory(
 			uint(req.Id),
@@ -127,10 +135,10 @@ func (s *GRPCPropertyListingServer) ModifyAsset(ctx context.Context, req *proto.
 		)
 
 		if err != nil {
-			return &proto.ModifyAssetResponse{Success: false}, err
+			return &proto.ResultResponse{Success: false}, err
 		}
 
-		return &proto.ModifyAssetResponse{Success: true}, nil
+		return &proto.ResultResponse{Success: true}, nil
 	}
 
 	if req.AssetType == AMENITY_ASSET_TYPE {
@@ -143,35 +151,35 @@ func (s *GRPCPropertyListingServer) ModifyAsset(ctx context.Context, req *proto.
 		)
 
 		if err != nil {
-			return &proto.ModifyAssetResponse{Success: false}, err
+			return &proto.ResultResponse{Success: false}, err
 		}
 
-		return &proto.ModifyAssetResponse{Success: true}, nil
+		return &proto.ResultResponse{Success: true}, nil
 	}
 
-	return &proto.ModifyAssetResponse{Success: false}, fmt.Errorf("invalid asset type")
+	return &proto.ResultResponse{Success: false}, fmt.Errorf("invalid asset type")
 }
 
-func (s *GRPCPropertyListingServer) DisableAsset(ctx context.Context, req *proto.DisableAssetRequest) (*proto.DisableAssetResponse, error) {
+func (s *GRPCPropertyListingServer) DisableAsset(ctx context.Context, req *proto.DisableAssetRequest) (*proto.ResultResponse, error) {
 	if req.AssetType == CATEGORY_ASSET_TYPE {
 		err := s.categorySvc.DisableCategory(uint(req.Id))
 
 		if err != nil {
-			return &proto.DisableAssetResponse{Success: false}, err
+			return &proto.ResultResponse{Success: false}, err
 		}
 
-		return &proto.DisableAssetResponse{Success: true}, nil
+		return &proto.ResultResponse{Success: true}, nil
 	}
 
 	if req.AssetType == AMENITY_ASSET_TYPE {
 		err := s.amenitySvc.DisableAmenity(uint(req.Id))
 
 		if err != nil {
-			return &proto.DisableAssetResponse{Success: false}, err
+			return &proto.ResultResponse{Success: false}, err
 		}
 
-		return &proto.DisableAssetResponse{Success: true}, nil
+		return &proto.ResultResponse{Success: true}, nil
 	}
 
-	return &proto.DisableAssetResponse{Success: false}, fmt.Errorf("invalid asset type")
+	return &proto.ResultResponse{Success: false}, fmt.Errorf("invalid asset type")
 }

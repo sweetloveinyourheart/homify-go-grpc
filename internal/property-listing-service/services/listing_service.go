@@ -1,11 +1,24 @@
 package services
 
-import "gorm.io/gorm"
+import (
+	"homify-go-grpc/internal/property-listing-service/models"
+	"homify-go-grpc/internal/property-listing-service/repositories"
 
-type IPropertyListingService interface{}
+	"gorm.io/gorm"
+)
 
-type PropertyListingService struct{}
+type IPropertyListingService interface {
+	AddNewProperty(newProperty models.Property) (bool, error)
+}
+
+type PropertyListingService struct {
+	repo repositories.IPropertyRepository
+}
 
 func NewPropertyListingService(db *gorm.DB) IPropertyListingService {
 	return &PropertyListingService{}
+}
+
+func (s *PropertyListingService) AddNewProperty(newProperty models.Property) (bool, error) {
+	return true, nil
 }
