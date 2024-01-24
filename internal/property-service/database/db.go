@@ -2,8 +2,8 @@ package database
 
 import (
 	"fmt"
-	"homify-go-grpc/internal/property-listing-service/configs"
-	"homify-go-grpc/internal/property-listing-service/models"
+	"homify-go-grpc/internal/property-service/configs"
+	"homify-go-grpc/internal/property-service/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

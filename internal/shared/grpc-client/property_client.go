@@ -1,19 +1,19 @@
 package grpc_client
 
 import (
-	proto "homify-go-grpc/api/property-listing"
+	proto "homify-go-grpc/api/property"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-func NewGRPCPropertyListingClient(remoteAddr string) (proto.PropertyListingClient, error) {
+func NewGRPCPropertyClient(remoteAddr string) (proto.PropertyClient, error) {
 	conn, err := grpc.Dial(remoteAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return nil, err
 	}
 
-	c := proto.NewPropertyListingClient(conn)
+	c := proto.NewPropertyClient(conn)
 
 	return c, nil
 }

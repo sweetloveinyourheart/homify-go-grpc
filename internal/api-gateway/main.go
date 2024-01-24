@@ -28,15 +28,15 @@ func RunHTTPServer() {
 	configurations := configs.GetConfig()
 
 	// Init auth client connection
-	authClient, authClientErr := grpc_client.NewGRPCAuthenticationClient(configurations.AuthenticationClientRemoteAddress)
+	authClient, authClientErr := grpc_client.NewGRPCAuthenticationClient(configurations.AuthClientRemoteAddress)
 	if authClientErr != nil {
 		panic(authClientErr)
 	}
 
 	// Init property listing client connection
-	propertyListingClient, propertyListingClientErr := grpc_client.NewGRPCPropertyListingClient(configurations.PropertyListingClientRemoteAddress)
-	if propertyListingClientErr != nil {
-		panic(propertyListingClientErr)
+	propertyClient, propertyClientErr := grpc_client.NewGRPCPropertyClient(configurations.PropertyClientRemoteAddress)
+	if propertyClientErr != nil {
+		panic(propertyClientErr)
 	}
 
 	// Register the validation function
@@ -55,7 +55,8 @@ func RunHTTPServer() {
 	{
 		routes.SetupHealthCheckRoute(v1)
 		routes.SetupAuthenticationHandler(v1, authClient, jwtAuthGuard, validator)
-		routes.SetupAssetsHandler(v1, propertyListingClient, jwtAuthGuard, validator)
+		routes.SetupAssetsHandler(v1, propertyClient, jwtAuthGuard, validator)
+		routes.SetupPropertyRoute(v1, propertyClient, jwtAuthGuard, validator)
 	}
 
 	if err := router.Run(configurations.Port); err != nil {

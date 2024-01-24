@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"homify-go-grpc/internal/property-listing-service/models"
+	"homify-go-grpc/internal/property-service/models"
 
 	"gorm.io/gorm"
 )

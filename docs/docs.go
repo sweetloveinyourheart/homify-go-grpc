@@ -28,8 +28,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Assets",
-                    "assets"
+                    "Assets"
                 ],
                 "summary": "Get assets by asset type",
                 "parameters": [
@@ -219,6 +218,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/property": {
+            "post": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "description": "Add a new property to the property listings.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Property"
+                ],
+                "summary": "Add a new property",
+                "operationId": "add-new-property",
+                "parameters": [
+                    {
+                        "description": "New Property object to be added",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.NewPropertyDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully added the new property",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
         "/sign-in": {
             "post": {
                 "description": "Handles the user sign-in process by validating input and authenticating the user via gRPC.",
@@ -380,6 +419,67 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "dtos.NewDestinationDTO": {
+            "type": "object",
+            "required": [
+                "city",
+                "country",
+                "lat",
+                "long"
+            ],
+            "properties": {
+                "city": {
+                    "type": "string",
+                    "maxLength": 250,
+                    "minLength": 3
+                },
+                "country": {
+                    "type": "string",
+                    "maxLength": 250,
+                    "minLength": 3
+                },
+                "lat": {
+                    "type": "number"
+                },
+                "long": {
+                    "type": "number"
+                }
+            }
+        },
+        "dtos.NewPropertyDTO": {
+            "type": "object",
+            "required": [
+                "amenity_id",
+                "category_id",
+                "description",
+                "destination",
+                "price",
+                "title"
+            ],
+            "properties": {
+                "amenity_id": {
+                    "type": "integer"
+                },
+                "category_id": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string",
+                    "minLength": 3
+                },
+                "destination": {
+                    "$ref": "#/definitions/dtos.NewDestinationDTO"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "title": {
+                    "type": "string",
+                    "maxLength": 250,
+                    "minLength": 3
                 }
             }
         },

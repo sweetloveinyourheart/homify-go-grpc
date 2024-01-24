@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"context"
-	proto "homify-go-grpc/api/property-listing"
+	proto "homify-go-grpc/api/property"
 	"homify-go-grpc/internal/api-gateway/dtos"
 	"homify-go-grpc/internal/api-gateway/helpers"
 	"log"
@@ -13,22 +13,20 @@ import (
 )
 
 type AssetsHandler struct {
-	grpcClient proto.PropertyListingClient
+	grpcClient proto.PropertyClient
 	validator  *validator.Validate
 }
 
-func NewAssetsHandler(c proto.PropertyListingClient, validate *validator.Validate) *AssetsHandler {
+func NewAssetsHandler(c proto.PropertyClient, validate *validator.Validate) *AssetsHandler {
 	return &AssetsHandler{
 		grpcClient: c,
 		validator:  validate,
 	}
 }
 
-// GetAssets godoc
 // @Tags Assets
 // @Summary Get assets by asset type
 // @Description Get assets based on the provided asset type
-// @Tags assets
 // @Accept json
 // @Produce json
 // @Param asset_type query string true "Asset type to filter by"

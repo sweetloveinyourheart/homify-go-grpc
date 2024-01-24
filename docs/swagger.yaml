@@ -30,6 +30,51 @@ definitions:
     - icon_url
     - name
     type: object
+  dtos.NewDestinationDTO:
+    properties:
+      city:
+        maxLength: 250
+        minLength: 3
+        type: string
+      country:
+        maxLength: 250
+        minLength: 3
+        type: string
+      lat:
+        type: number
+      long:
+        type: number
+    required:
+    - city
+    - country
+    - lat
+    - long
+    type: object
+  dtos.NewPropertyDTO:
+    properties:
+      amenity_id:
+        type: integer
+      category_id:
+        type: integer
+      description:
+        minLength: 3
+        type: string
+      destination:
+        $ref: '#/definitions/dtos.NewDestinationDTO'
+      price:
+        type: number
+      title:
+        maxLength: 250
+        minLength: 3
+        type: string
+    required:
+    - amenity_id
+    - category_id
+    - description
+    - destination
+    - price
+    - title
+    type: object
   dtos.SignInDTO:
     properties:
       email:
@@ -114,7 +159,6 @@ paths:
       summary: Get assets by asset type
       tags:
       - Assets
-      - assets
     post:
       consumes:
       - application/json
@@ -223,6 +267,31 @@ paths:
       summary: Health check endpoint
       tags:
       - Health check
+  /property:
+    post:
+      consumes:
+      - application/json
+      description: Add a new property to the property listings.
+      operationId: add-new-property
+      parameters:
+      - description: New Property object to be added
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.NewPropertyDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully added the new property
+          schema:
+            type: object
+      security:
+      - Authorization: []
+      summary: Add a new property
+      tags:
+      - Property
   /sign-in:
     post:
       consumes:

@@ -1,6 +1,6 @@
 package configs
 
-type PropertyListingConfig struct {
+type PropertyConfig struct {
 	TCPAddress string
 
 	PostgresHost     string
@@ -10,8 +10,8 @@ type PropertyListingConfig struct {
 	PostgresDatabase string
 }
 
-func GetConfig() PropertyListingConfig {
-	return PropertyListingConfig{
+func GetConfig() PropertyConfig {
+	return PropertyConfig{
 		TCPAddress:       ":50052",
 		PostgresHost:     "localhost",
 		PostgresPort:     "50042",

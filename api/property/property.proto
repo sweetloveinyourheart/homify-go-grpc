@@ -2,7 +2,7 @@ syntax = "proto3";
 
 option go_package = "github.com/Sweetloveinyourheart/micro/proto";
 
-service PropertyListing {
+service Property {
     rpc GetAssets(GetAssetsRequest) returns (GetAssetsResponse);
     rpc AddAsset(AddAssetRequest) returns (ResultResponse);
     rpc ModifyAsset(ModifyAssetRequest) returns (ResultResponse);

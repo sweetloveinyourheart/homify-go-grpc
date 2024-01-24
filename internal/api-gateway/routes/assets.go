@@ -1,7 +1,7 @@
 package routes
 
 import (
-	proto "homify-go-grpc/api/property-listing"
+	proto "homify-go-grpc/api/property"
 	"homify-go-grpc/internal/api-gateway/handlers"
 	"homify-go-grpc/internal/api-gateway/middlewares"
 
@@ -11,7 +11,7 @@ import (
 
 func SetupAssetsHandler(
 	router *gin.RouterGroup,
-	client proto.PropertyListingClient,
+	client proto.PropertyClient,
 	jwtAuthGuard *middlewares.JwtAuthGuard,
 	validator *validator.Validate,
 ) {
