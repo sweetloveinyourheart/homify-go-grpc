@@ -38,6 +38,11 @@ const (
 // Property handlers
 
 func (s *GRPCPropertyServer) AddProperty(ctx context.Context, req *proto.NewProperty) (*proto.ResultResponse, error) {
+	newProperty := models.Property{
+		Title: req.Title,
+	}
+
+	s.propertySvc.AddNewProperty(newProperty)
 	return &proto.ResultResponse{Success: true}, nil
 }
 

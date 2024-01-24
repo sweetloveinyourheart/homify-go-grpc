@@ -3,6 +3,7 @@ version: '3.8'
 services:
   homify-authentication-db:
     image: postgres:latest
+    container_name: auth-db
     environment:
       POSTGRES_PORT: 5432
       POSTGRES_HOST: localhost
@@ -18,6 +19,7 @@ services:
 
   homify-property-listing-db:
     image: postgres:latest
+    container_name: property_db
     environment:
       POSTGRES_PORT: 5432
       POSTGRES_HOST: localhost
@@ -33,6 +35,7 @@ services:
 
   elasticsearch:
     image: 'bitnami/elasticsearch:latest'
+    container_name: es
     environment:
       - discovery.type=single-node
     networks:
@@ -42,6 +45,7 @@ services:
 
   kibana:
     image: bitnami/kibana:latest
+    container_name: kibana
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     networks:
@@ -52,29 +56,31 @@ services:
       - elasticsearch
 
   zookeeper:
-    image: 'bitnami/zookeeper:latest'
-    ports:
-      - "2181:2181"
+    image: 'confluentinc/cp-zookeeper:latest'
+    container_name: zookeeper
     environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
+      - ZOOKEEPER_CLIENT_PORT=2181
+      - ZOOKEEPER_TICK_TIME=2000
     networks:
       - homify-network
 
-  kafka:
-    image: 'bitnami/kafka:latest'
+  broker:
+    image: 'confluentinc/cp-kafka:latest'
+    container_name: broker
     networks:
       - homify-network
     ports:
      - "9092:9092"
-    expose:
-     - "9093"
+    depends_on:
+      - zookeeper
     environment:
-      - KAFKA_CFG_NODE_ID=0
-      - KAFKA_CFG_PROCESS_ROLES=controller,broker
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
-      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_BROKER_ID=0
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
+      - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
 
 networks:
   homify-network:

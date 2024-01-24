@@ -15,9 +15,11 @@ func RunSearchServer() {
 	kafkaContexts := kafka_configs.GetContext()
 
 	// Kafka consumer setup
-	c := consumers.NewSearchConsumer(kafkaConfigs, kafkaContexts)
-	c.Subscribe(kafkaContexts.SearchTopic)
-	defer c.CloseConsumer()
+	go func() {
+		c := consumers.NewSearchConsumer(kafkaConfigs, kafkaContexts)
+		c.Subscribe(kafkaContexts.SearchTopic)
+		defer c.CloseConsumer()
+	}()
 
 	// Net TCP setup
 	_, err := net.Listen("tcp", configurations.TCPAddress)

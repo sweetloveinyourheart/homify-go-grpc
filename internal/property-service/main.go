@@ -23,7 +23,7 @@ func RunGRPCPropertyServer() {
 
 	// Init kafka producer
 	p := producers.NewPropertyProducer(kafkaConfigs)
-	p.InitDeliveryReport()
+	go p.InitDeliveryReport()
 	defer p.CloseProducer()
 
 	// Init property listing service
@@ -36,7 +36,7 @@ func RunGRPCPropertyServer() {
 	srv := server.NewGRPCPropertyServer(db, p)
 	proto.RegisterPropertyServer(s, srv)
 
-	fmt.Printf("🚀 Property  Server is listening on port %s ... \n", configurations.TCPAddress)
+	fmt.Printf("🚀 Property Server is listening on port %s ... \n", configurations.TCPAddress)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
