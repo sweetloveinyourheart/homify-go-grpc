@@ -7,6 +7,7 @@ import (
 	"homify-go-grpc/internal/property-service/models"
 	"homify-go-grpc/internal/property-service/producers"
 	"homify-go-grpc/internal/property-service/services"
+	"homify-go-grpc/internal/property-service/types"
 
 	"gorm.io/gorm"
 )
@@ -38,11 +39,26 @@ const (
 // Property handlers
 
 func (s *GRPCPropertyServer) AddProperty(ctx context.Context, req *proto.NewProperty) (*proto.ResultResponse, error) {
-	newProperty := models.Property{
-		Title: req.Title,
+	assetIds := types.PropertyAssetIds{
+		CategoryId: uint(req.CategoryId),
+		AmenityId:  uint(req.AmenityId),
 	}
 
-	s.propertySvc.AddNewProperty(newProperty)
+	newProperty := models.Property{
+		HostId:      uint(req.HostId),
+		Title:       req.Title,
+		Description: req.Description,
+		Price:       req.Price,
+	}
+
+	newDestination := models.Destination{
+		Country:   req.Destination.Country,
+		City:      req.Destination.City,
+		Latitude:  req.Destination.Latitude,
+		Longitude: req.Destination.Longitude,
+	}
+
+	s.propertySvc.AddNewProperty(assetIds, newProperty, newDestination)
 	return &proto.ResultResponse{Success: true}, nil
 }
 

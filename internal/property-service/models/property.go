@@ -7,7 +7,7 @@ type Property struct {
 	HostId      uint
 	Title       string
 	Description string
-	Price       string
+	Price       float32
 	IsAvailable bool
 	Category    []Category `gorm:"many2many:property_categories;"`
 	Amenity     []Amenity  `gorm:"many2many:property_amenities;"`

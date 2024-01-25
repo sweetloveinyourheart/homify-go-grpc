@@ -4,13 +4,18 @@ import (
 	"homify-go-grpc/internal/property-service/models"
 	"homify-go-grpc/internal/property-service/producers"
 	"homify-go-grpc/internal/property-service/repositories"
+	"homify-go-grpc/internal/property-service/types"
 	kafka_configs "homify-go-grpc/internal/shared/kafka-configs"
 
 	"gorm.io/gorm"
 )
 
 type IPropertyService interface {
-	AddNewProperty(newProperty models.Property) (bool, error)
+	AddNewProperty(
+		assetIds types.PropertyAssetIds,
+		newProperty models.Property,
+		newDestination models.Destination,
+	) (bool, error)
 }
 
 type PropertyService struct {
@@ -25,7 +30,13 @@ func NewPropertyService(db *gorm.DB, p producers.IPropertyProducer) IPropertySer
 	}
 }
 
-func (s *PropertyService) AddNewProperty(newProperty models.Property) (bool, error) {
+func (s *PropertyService) AddNewProperty(
+	assetIds types.PropertyAssetIds,
+	newProperty models.Property,
+	newDestination models.Destination,
+) (bool, error) {
+
+	// Publish to kafka
 	context := kafka_configs.GetContext()
 	s.producer.ProduceMessages(context.SearchTopic, "Hi there !")
 

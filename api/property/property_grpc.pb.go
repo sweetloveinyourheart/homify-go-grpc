@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v4.25.1
-// source: property-/property.proto
+// source: property/property.proto
 
 package proto
 
@@ -245,5 +245,5 @@ var Property_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "property-/property.proto",
+	Metadata: "property/property.proto",
 }
