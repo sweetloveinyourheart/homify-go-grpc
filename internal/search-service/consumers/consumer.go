@@ -17,7 +17,7 @@ type SearchConsumer struct {
 	client *kafka.Consumer
 }
 
-func NewSearchConsumer(configs *kafka_configs.KafkaConfigs, contexts *kafka_configs.KafkaContexts) ISearchConsumer {
+func NewSearchConsumer(configs kafka_configs.KafkaConfigs, contexts kafka_configs.KafkaContexts) ISearchConsumer {
 	c, err := kafka.NewConsumer(&kafka.ConfigMap{
 		"bootstrap.servers": configs.KafkaServerAddress,
 		"group.id":          contexts.SearchGroup,

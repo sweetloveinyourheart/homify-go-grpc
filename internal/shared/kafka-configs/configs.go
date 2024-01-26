@@ -9,14 +9,14 @@ type KafkaContexts struct {
 	SearchGroup string
 }
 
-func GetConfig() *KafkaConfigs {
-	return &KafkaConfigs{
+func GetConfig() KafkaConfigs {
+	return KafkaConfigs{
 		KafkaServerAddress: "localhost:9092",
 	}
 }
 
-func GetContext() *KafkaContexts {
-	return &KafkaContexts{
+func GetContext() KafkaContexts {
+	return KafkaContexts{
 		SearchTopic: "search",
 		SearchGroup: "search-group",
 	}

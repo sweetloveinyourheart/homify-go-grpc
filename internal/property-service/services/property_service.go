@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"homify-go-grpc/internal/property-service/models"
 	"homify-go-grpc/internal/property-service/producers"
 	"homify-go-grpc/internal/property-service/repositories"
@@ -19,14 +20,18 @@ type IPropertyService interface {
 }
 
 type PropertyService struct {
-	repo     repositories.IPropertyRepository
-	producer producers.IPropertyProducer
+	repo            repositories.IPropertyRepository
+	categoryService ICategoryService
+	amenityService  IAmenityService
+	producer        producers.IPropertyProducer
 }
 
 func NewPropertyService(db *gorm.DB, p producers.IPropertyProducer) IPropertyService {
 	return &PropertyService{
-		repo:     repositories.NewPropertyRepository(db),
-		producer: p,
+		repo:            repositories.NewPropertyRepository(db),
+		producer:        p,
+		categoryService: NewCategoryService(db),
+		amenityService:  NewAmenityService(db),
 	}
 }
 
@@ -35,6 +40,16 @@ func (s *PropertyService) AddNewProperty(
 	newProperty models.Property,
 	newDestination models.Destination,
 ) (bool, error) {
+
+	category, categoryErr := s.categoryService.GetCategoryByID(assetIds.CategoryId)
+	if categoryErr != nil {
+		return false, fmt.Errorf("no category found")
+	}
+
+	amenity, amenityErr := s.amenityService.GetAmenityByID(assetIds.AmenityId)
+	if amenityErr != nil {
+		return false, fmt.Errorf("no amenity found")
+	}
 
 	// Publish to kafka
 	context := kafka_configs.GetContext()

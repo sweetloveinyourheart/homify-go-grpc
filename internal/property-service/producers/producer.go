@@ -17,7 +17,7 @@ type PropertyProducer struct {
 	producer *kafka.Producer
 }
 
-func NewPropertyProducer(configs *kafka_configs.KafkaConfigs) IPropertyProducer {
+func NewPropertyProducer(configs kafka_configs.KafkaConfigs) IPropertyProducer {
 	p, err := kafka.NewProducer(&kafka.ConfigMap{
 		"bootstrap.servers": configs.KafkaServerAddress,
 	})
