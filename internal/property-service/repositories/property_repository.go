@@ -8,10 +8,11 @@ import (
 
 // PropertyRepositoryInterface defines the interface for managing Property entities.
 type IPropertyRepository interface {
-	CreateProperty(amenity *models.Property) error
+	CreateProperty(property *models.Property) error
 	GetPropertyByID(id uint) (*models.Property, error)
 	GetAllCategories() ([]models.Property, error)
-	UpdateProperty(amenity *models.Property) error
+	Association(property *models.Property, column string) *gorm.Association
+	UpdateProperty(property *models.Property) error
 	DeleteProperty(id uint) error
 }
 
@@ -25,16 +26,16 @@ func NewPropertyRepository(db *gorm.DB) IPropertyRepository {
 	return &PropertyRepository{db}
 }
 
-// CreateProperty creates a new amenity.
-func (r *PropertyRepository) CreateProperty(amenity *models.Property) error {
-	return r.db.Create(amenity).Error
+// CreateProperty creates a new property.
+func (r *PropertyRepository) CreateProperty(property *models.Property) error {
+	return r.db.Create(property).Error
 }
 
-// GetPropertyByID retrieves a amenity by its ID.
+// GetPropertyByID retrieves a property by its ID.
 func (r *PropertyRepository) GetPropertyByID(id uint) (*models.Property, error) {
-	var amenity models.Property
-	err := r.db.First(&amenity, id).Error
-	return &amenity, err
+	var property models.Property
+	err := r.db.First(&property, id).Error
+	return &property, err
 }
 
 // GetAllCategories retrieves all amenities.
@@ -44,12 +45,16 @@ func (r *PropertyRepository) GetAllCategories() ([]models.Property, error) {
 	return categories, err
 }
 
-// UpdateProperty updates an existing amenity.
-func (r *PropertyRepository) UpdateProperty(amenity *models.Property) error {
-	return r.db.Save(amenity).Error
+func (r *PropertyRepository) Association(property *models.Property, column string) *gorm.Association {
+	return r.db.Model(property).Association(column)
 }
 
-// DeleteProperty deletes a amenity by its ID.
+// UpdateProperty updates an existing property.
+func (r *PropertyRepository) UpdateProperty(property *models.Property) error {
+	return r.db.Save(property).Error
+}
+
+// DeleteProperty deletes a property by its ID.
 func (r *PropertyRepository) DeleteProperty(id uint) error {
 	return r.db.Delete(&models.Property{}, id).Error
 }
