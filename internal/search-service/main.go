@@ -4,20 +4,22 @@ import (
 	"fmt"
 	"homify-go-grpc/internal/search-service/configs"
 	"homify-go-grpc/internal/search-service/consumers"
-	kafka_configs "homify-go-grpc/internal/shared/kafka-configs"
+	broker "homify-go-grpc/internal/shared/broker"
 	"log"
 	"net"
 )
 
 func RunSearchServer() {
-	configurations := configs.GetConfig()
-	kafkaConfigs := kafka_configs.GetConfig()
-	kafkaContexts := kafka_configs.GetContext()
+	configurations := configs.GetConfigs()
 
 	// Kafka consumer setup
 	go func() {
-		c := consumers.NewSearchConsumer(kafkaConfigs, kafkaContexts)
-		c.Subscribe(kafkaContexts.SearchTopic)
+		c := consumers.NewSearchConsumer()
+
+		topics := broker.GetTopics()
+		c.SubscribeTopics(topics.SearchTopic)
+		c.StartSubscribe(topics)
+
 		defer c.CloseConsumer()
 	}()
 

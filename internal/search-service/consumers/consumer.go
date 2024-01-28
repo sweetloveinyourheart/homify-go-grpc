@@ -2,14 +2,15 @@ package consumers
 
 import (
 	"fmt"
-	kafka_configs "homify-go-grpc/internal/shared/kafka-configs"
+	broker "homify-go-grpc/internal/shared/broker"
 	"time"
 
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 )
 
 type ISearchConsumer interface {
-	Subscribe(topics ...string)
+	SubscribeTopics(topics ...string)
+	StartSubscribe(topics broker.KafkaTopics)
 	CloseConsumer()
 }
 
@@ -17,10 +18,13 @@ type SearchConsumer struct {
 	client *kafka.Consumer
 }
 
-func NewSearchConsumer(configs kafka_configs.KafkaConfigs, contexts kafka_configs.KafkaContexts) ISearchConsumer {
+func NewSearchConsumer() ISearchConsumer {
+	configs := broker.GetConfigs()
+	groups := broker.GetGroups()
+
 	c, err := kafka.NewConsumer(&kafka.ConfigMap{
 		"bootstrap.servers": configs.KafkaServerAddress,
-		"group.id":          contexts.SearchGroup,
+		"group.id":          groups.SearchGroup,
 		"auto.offset.reset": "earliest",
 	})
 
@@ -33,13 +37,23 @@ func NewSearchConsumer(configs kafka_configs.KafkaConfigs, contexts kafka_config
 	}
 }
 
-func (csm *SearchConsumer) Subscribe(topics ...string) {
+func (csm *SearchConsumer) SubscribeTopics(topics ...string) {
 	csm.client.SubscribeTopics(topics, nil)
+}
 
+func (csm *SearchConsumer) StartSubscribe(topics broker.KafkaTopics) {
 	for {
 		msg, err := csm.client.ReadMessage(time.Second)
 		if err == nil {
-			fmt.Printf("Message on %s: %s\n", msg.TopicPartition, string(msg.Value))
+			topic := msg.TopicPartition.Topic
+
+			switch topic {
+			case &topics.SearchTopic:
+				fmt.Printf("Message on %s: %s\n", msg.TopicPartition, string(msg.Value))
+			default:
+				fmt.Println("Unknown message")
+			}
+
 		} else if !err.(kafka.Error).IsTimeout() {
 			// The client will automatically try to recover from all errors.
 			// Timeout is not considered an error because it is raised by

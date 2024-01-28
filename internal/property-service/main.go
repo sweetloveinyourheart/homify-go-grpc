@@ -7,7 +7,7 @@ import (
 	"homify-go-grpc/internal/property-service/database"
 	"homify-go-grpc/internal/property-service/producers"
 	"homify-go-grpc/internal/property-service/server"
-	kafka_configs "homify-go-grpc/internal/shared/kafka-configs"
+	broker "homify-go-grpc/internal/shared/broker"
 	"log"
 	"net"
 
@@ -16,7 +16,7 @@ import (
 
 func RunGRPCPropertyServer() {
 	configurations := configs.GetConfig()
-	kafkaConfigs := kafka_configs.GetConfig()
+	kafkaConfigs := broker.GetConfigs()
 
 	// Init database
 	db := database.InitPostgresConnection()

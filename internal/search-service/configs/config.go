@@ -1,11 +1,11 @@
 package configs
 
-type SearchServiceConfig struct {
+type SearchServiceConfigs struct {
 	TCPAddress string
 }
 
-func GetConfig() *SearchServiceConfig {
-	return &SearchServiceConfig{
+func GetConfigs() SearchServiceConfigs {
+	return SearchServiceConfigs{
 		TCPAddress: ":50053",
 	}
 }

@@ -2,14 +2,14 @@ package producers
 
 import (
 	"fmt"
-	kafka_configs "homify-go-grpc/internal/shared/kafka-configs"
+	broker "homify-go-grpc/internal/shared/broker"
 
 	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 )
 
 type IPropertyProducer interface {
 	InitDeliveryReport()
-	ProduceMessages(topic string, word string)
+	ProduceMessages(topic string, value []byte)
 	CloseProducer()
 }
 
@@ -17,7 +17,7 @@ type PropertyProducer struct {
 	producer *kafka.Producer
 }
 
-func NewPropertyProducer(configs kafka_configs.KafkaConfigs) IPropertyProducer {
+func NewPropertyProducer(configs broker.KafkaConfigs) IPropertyProducer {
 	p, err := kafka.NewProducer(&kafka.ConfigMap{
 		"bootstrap.servers": configs.KafkaServerAddress,
 	})
@@ -44,10 +44,10 @@ func (prd *PropertyProducer) InitDeliveryReport() {
 	}
 }
 
-func (prd *PropertyProducer) ProduceMessages(topic string, word string) {
+func (prd *PropertyProducer) ProduceMessages(topic string, value []byte) {
 	prd.producer.Produce(&kafka.Message{
 		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
-		Value:          []byte(word),
+		Value:          value,
 	}, nil)
 }
 

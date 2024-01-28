@@ -1,12 +1,13 @@
 package services
 
 import (
+	"encoding/json"
 	"fmt"
 	"homify-go-grpc/internal/property-service/models"
 	"homify-go-grpc/internal/property-service/producers"
 	"homify-go-grpc/internal/property-service/repositories"
 	"homify-go-grpc/internal/property-service/types"
-	kafka_configs "homify-go-grpc/internal/shared/kafka-configs"
+	broker "homify-go-grpc/internal/shared/broker"
 
 	"gorm.io/gorm"
 )
@@ -60,10 +61,10 @@ func (s *PropertyService) AddNewProperty(
 		Price:       newProperty.Price,
 	}
 
+	s.repo.CreateProperty(&property)
+
 	s.repo.Association(&property, "Category").Append(category)
 	s.repo.Association(&property, "Amenity").Append(amenity)
-
-	s.repo.CreateProperty(&property)
 
 	destination := models.Destination{
 		Country:   newDestination.Country,
@@ -75,9 +76,15 @@ func (s *PropertyService) AddNewProperty(
 
 	s.destinationRepo.CreateDestination(&destination)
 
+	// Serialize the property object into JSON
+	propertyJSON, err := json.Marshal(property)
+	if err != nil {
+		return false, fmt.Errorf("failed to serialize property: %v", err)
+	}
+
 	// Publish to kafka
-	context := kafka_configs.GetContext()
-	s.producer.ProduceMessages(context.SearchTopic, "Hi there !")
+	topics := broker.GetTopics()
+	s.producer.ProduceMessages(topics.SearchTopic, propertyJSON)
 
 	return true, nil
 }
