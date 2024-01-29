@@ -1,7 +1,7 @@
 package broker
 
 type KafkaTopics struct {
-	SearchTopic string
+	SyncProperties string
 }
 
 type KafkaGroups struct {
@@ -10,7 +10,7 @@ type KafkaGroups struct {
 
 func GetTopics() KafkaTopics {
 	return KafkaTopics{
-		SearchTopic: "search",
+		SyncProperties: "sync-search",
 	}
 }
 

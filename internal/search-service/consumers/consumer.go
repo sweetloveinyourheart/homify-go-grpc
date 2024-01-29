@@ -2,6 +2,7 @@ package consumers
 
 import (
 	"fmt"
+	"homify-go-grpc/internal/search-service/services"
 	broker "homify-go-grpc/internal/shared/broker"
 	"time"
 
@@ -15,7 +16,8 @@ type ISearchConsumer interface {
 }
 
 type SearchConsumer struct {
-	client *kafka.Consumer
+	client                *kafka.Consumer
+	propertySearchService services.IPropertySearchService
 }
 
 func NewSearchConsumer() ISearchConsumer {
@@ -33,7 +35,8 @@ func NewSearchConsumer() ISearchConsumer {
 	}
 
 	return &SearchConsumer{
-		client: c,
+		client:                c,
+		propertySearchService: services.NewPropertySearchService(),
 	}
 }
 
@@ -45,11 +48,14 @@ func (csm *SearchConsumer) StartSubscribe(topics broker.KafkaTopics) {
 	for {
 		msg, err := csm.client.ReadMessage(time.Second)
 		if err == nil {
-			topic := msg.TopicPartition.Topic
+			topic := *msg.TopicPartition.Topic
 
 			switch topic {
-			case &topics.SearchTopic:
-				fmt.Printf("Message on %s: %s\n", msg.TopicPartition, string(msg.Value))
+			case topics.SyncProperties:
+				err := csm.propertySearchService.SyncData(msg.Value)
+				if err != nil {
+					fmt.Printf("Sync es data failed with err: %e", err)
+				}
 			default:
 				fmt.Println("Unknown message")
 			}

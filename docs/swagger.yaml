@@ -292,6 +292,24 @@ paths:
       summary: Add a new property
       tags:
       - Property
+  /property/sync:
+    put:
+      consumes:
+      - application/json
+      description: Sync all the property to ES
+      operationId: sync-properties
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully
+          schema:
+            type: object
+      security:
+      - Authorization: []
+      summary: Sync all the property to ES
+      tags:
+      - Property
   /sign-in:
     post:
       consumes:

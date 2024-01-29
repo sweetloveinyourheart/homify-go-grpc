@@ -10,7 +10,7 @@ import (
 type IPropertyRepository interface {
 	CreateProperty(property *models.Property) error
 	GetPropertyByID(id uint) (*models.Property, error)
-	GetAllCategories() ([]models.Property, error)
+	GetAllProperties(association bool) ([]models.Property, error)
 	Association(property *models.Property, column string) *gorm.Association
 	UpdateProperty(property *models.Property) error
 	DeleteProperty(id uint) error
@@ -38,11 +38,15 @@ func (r *PropertyRepository) GetPropertyByID(id uint) (*models.Property, error) 
 	return &property, err
 }
 
-// GetAllCategories retrieves all amenities.
-func (r *PropertyRepository) GetAllCategories() ([]models.Property, error) {
-	var categories []models.Property
-	err := r.db.Find(&categories).Error
-	return categories, err
+// GetAllProperties retrieves all property.
+func (r *PropertyRepository) GetAllProperties(association bool) ([]models.Property, error) {
+	var properties []models.Property
+	if association {
+		err := r.db.Preload("Amenity").Preload("Category").Preload("Destination").Find(&properties).Error
+		return properties, err
+	}
+	err := r.db.Find(&properties).Error
+	return properties, err
 }
 
 func (r *PropertyRepository) Association(property *models.Property, column string) *gorm.Association {

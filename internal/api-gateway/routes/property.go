@@ -15,9 +15,10 @@ func SetupPropertyRoute(
 	jwtAuthGuard *middlewares.JwtAuthGuard,
 	validator *validator.Validate,
 ) {
-	heathCheckHandler := handlers.NewPropertyHandler(client, validator)
+	propertyHandler := handlers.NewPropertyHandler(client, validator)
 	authGuard := jwtAuthGuard.AuthGuard
 
 	// routers
-	router.POST("/property", authGuard, heathCheckHandler.AddNewProperty)
+	router.POST("/property", authGuard, propertyHandler.AddNewProperty)
+	router.PUT("/property/sync", propertyHandler.SyncProperties)
 }

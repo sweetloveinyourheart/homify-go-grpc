@@ -27,6 +27,7 @@ type PropertyClient interface {
 	ModifyAsset(ctx context.Context, in *ModifyAssetRequest, opts ...grpc.CallOption) (*ResultResponse, error)
 	DisableAsset(ctx context.Context, in *DisableAssetRequest, opts ...grpc.CallOption) (*ResultResponse, error)
 	AddProperty(ctx context.Context, in *NewProperty, opts ...grpc.CallOption) (*ResultResponse, error)
+	SyncProperties(ctx context.Context, in *SyncPropertiesRequest, opts ...grpc.CallOption) (*ResultResponse, error)
 }
 
 type propertyClient struct {
@@ -82,6 +83,15 @@ func (c *propertyClient) AddProperty(ctx context.Context, in *NewProperty, opts 
 	return out, nil
 }
 
+func (c *propertyClient) SyncProperties(ctx context.Context, in *SyncPropertiesRequest, opts ...grpc.CallOption) (*ResultResponse, error) {
+	out := new(ResultResponse)
+	err := c.cc.Invoke(ctx, "/Property/SyncProperties", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PropertyServer is the server API for Property service.
 // All implementations must embed UnimplementedPropertyServer
 // for forward compatibility
@@ -91,6 +101,7 @@ type PropertyServer interface {
 	ModifyAsset(context.Context, *ModifyAssetRequest) (*ResultResponse, error)
 	DisableAsset(context.Context, *DisableAssetRequest) (*ResultResponse, error)
 	AddProperty(context.Context, *NewProperty) (*ResultResponse, error)
+	SyncProperties(context.Context, *SyncPropertiesRequest) (*ResultResponse, error)
 	mustEmbedUnimplementedPropertyServer()
 }
 
@@ -112,6 +123,9 @@ func (UnimplementedPropertyServer) DisableAsset(context.Context, *DisableAssetRe
 }
 func (UnimplementedPropertyServer) AddProperty(context.Context, *NewProperty) (*ResultResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddProperty not implemented")
+}
+func (UnimplementedPropertyServer) SyncProperties(context.Context, *SyncPropertiesRequest) (*ResultResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SyncProperties not implemented")
 }
 func (UnimplementedPropertyServer) mustEmbedUnimplementedPropertyServer() {}
 
@@ -216,6 +230,24 @@ func _Property_AddProperty_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Property_SyncProperties_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SyncPropertiesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PropertyServer).SyncProperties(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Property/SyncProperties",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PropertyServer).SyncProperties(ctx, req.(*SyncPropertiesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Property_ServiceDesc is the grpc.ServiceDesc for Property service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -242,6 +274,10 @@ var Property_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddProperty",
 			Handler:    _Property_AddProperty_Handler,
+		},
+		{
+			MethodName: "SyncProperties",
+			Handler:    _Property_SyncProperties_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -62,6 +62,12 @@ func (s *GRPCPropertyServer) AddProperty(ctx context.Context, req *proto.NewProp
 	return &proto.ResultResponse{Success: true}, nil
 }
 
+func (s *GRPCPropertyServer) SyncProperties(ctx context.Context, req *proto.SyncPropertiesRequest) (*proto.ResultResponse, error) {
+	s.propertySvc.SyncProperties()
+
+	return &proto.ResultResponse{Success: true}, nil
+}
+
 // Assets handlers
 
 func (s *GRPCPropertyServer) GetAssets(ctx context.Context, req *proto.GetAssetsRequest) (*proto.GetAssetsResponse, error) {

@@ -9,6 +9,7 @@ service Property {
     rpc DisableAsset(DisableAssetRequest) returns (ResultResponse);
 
     rpc AddProperty(NewProperty) returns (ResultResponse);
+    rpc SyncProperties(SyncPropertiesRequest) returns (ResultResponse);
 }
 
 // Common
@@ -69,3 +70,5 @@ message NewProperty {
     uint32 amenity_id = 6;
     NewDestination destination = 7;
 }
+
+message SyncPropertiesRequest {}

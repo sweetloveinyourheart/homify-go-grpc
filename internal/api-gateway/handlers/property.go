@@ -77,3 +77,22 @@ func (h *PropertyHandler) AddNewProperty(ctx *gin.Context) {
 		"Success": true,
 	})
 }
+
+// @Summary Sync all the property to ES
+// @Tags Property
+// @Description Sync all the property to ES
+// @ID sync-properties
+// @Accept  json
+// @Produce  json
+// @Security Authorization
+// @Success 200 {object} interface{} "Successfully"
+// @Router /property/sync [put]
+func (h *PropertyHandler) SyncProperties(ctx *gin.Context) {
+	propertyCtx := context.Background()
+
+	h.grpcClient.SyncProperties(propertyCtx, &proto.SyncPropertiesRequest{})
+
+	ctx.JSON(200, gin.H{
+		"Success": true,
+	})
+}

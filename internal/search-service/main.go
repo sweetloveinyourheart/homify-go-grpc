@@ -17,7 +17,7 @@ func RunSearchServer() {
 		c := consumers.NewSearchConsumer()
 
 		topics := broker.GetTopics()
-		c.SubscribeTopics(topics.SearchTopic)
+		c.SubscribeTopics(topics.SyncProperties)
 		c.StartSubscribe(topics)
 
 		defer c.CloseConsumer()

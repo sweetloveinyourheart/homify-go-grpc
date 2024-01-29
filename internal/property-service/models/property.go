@@ -9,6 +9,7 @@ type Property struct {
 	Description string
 	Price       float32
 	IsAvailable bool
-	Category    []Category `gorm:"many2many:property_categories;"`
-	Amenity     []Amenity  `gorm:"many2many:property_amenities;"`
+	Destination Destination `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	Category    []Category  `gorm:"many2many:property_categories;"`
+	Amenity     []Amenity   `gorm:"many2many:property_amenities;"`
 }

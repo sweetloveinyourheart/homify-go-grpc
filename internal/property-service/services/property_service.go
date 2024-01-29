@@ -13,11 +13,8 @@ import (
 )
 
 type IPropertyService interface {
-	AddNewProperty(
-		assetIds types.PropertyAssetIds,
-		newProperty models.Property,
-		newDestination models.Destination,
-	) (bool, error)
+	AddNewProperty(assetIds types.PropertyAssetIds, newProperty models.Property, newDestination models.Destination) (bool, error)
+	SyncProperties()
 }
 
 type PropertyService struct {
@@ -54,27 +51,27 @@ func (s *PropertyService) AddNewProperty(
 		return false, fmt.Errorf("no amenity found")
 	}
 
+	destination := models.Destination{
+		Country:   newDestination.Country,
+		City:      newDestination.City,
+		Latitude:  newDestination.Latitude,
+		Longitude: newDestination.Longitude,
+	}
+
+	s.destinationRepo.CreateDestination(&destination)
+
 	property := models.Property{
 		HostId:      uint(newProperty.HostId),
 		Title:       newProperty.Title,
 		Description: newProperty.Description,
 		Price:       newProperty.Price,
+		Destination: destination,
 	}
 
 	s.repo.CreateProperty(&property)
 
 	s.repo.Association(&property, "Category").Append(category)
 	s.repo.Association(&property, "Amenity").Append(amenity)
-
-	destination := models.Destination{
-		Country:   newDestination.Country,
-		City:      newDestination.City,
-		Latitude:  newDestination.Latitude,
-		Longitude: newDestination.Longitude,
-		Property:  property,
-	}
-
-	s.destinationRepo.CreateDestination(&destination)
 
 	// Serialize the property object into JSON
 	propertyJSON, err := json.Marshal(property)
@@ -84,7 +81,25 @@ func (s *PropertyService) AddNewProperty(
 
 	// Publish to kafka
 	topics := broker.GetTopics()
-	s.producer.ProduceMessages(topics.SearchTopic, propertyJSON)
+	s.producer.ProduceMessages(topics.SyncProperties, propertyJSON)
 
 	return true, nil
+}
+
+func (s *PropertyService) SyncProperties() {
+	properties, pErr := s.repo.GetAllProperties(true)
+	if pErr != nil {
+		fmt.Println(pErr.Error())
+		return
+	}
+
+	propertyJSON, err := json.Marshal(properties)
+	if err != nil {
+		fmt.Printf("failed to serialize property: %v", err)
+		return
+	}
+
+	// Publish to kafka
+	topics := broker.GetTopics()
+	s.producer.ProduceMessages(topics.SyncProperties, propertyJSON)
 }

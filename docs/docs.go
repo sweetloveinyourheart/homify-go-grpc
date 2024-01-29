@@ -258,6 +258,35 @@ const docTemplate = `{
                 }
             }
         },
+        "/property/sync": {
+            "put": {
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "description": "Sync all the property to ES",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Property"
+                ],
+                "summary": "Sync all the property to ES",
+                "operationId": "sync-properties",
+                "responses": {
+                    "200": {
+                        "description": "Successfully",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
         "/sign-in": {
             "post": {
                 "description": "Handles the user sign-in process by validating input and authenticating the user via gRPC.",

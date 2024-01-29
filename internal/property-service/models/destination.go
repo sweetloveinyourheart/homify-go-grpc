@@ -9,5 +9,4 @@ type Destination struct {
 	Latitude   float32
 	Longitude  float32
 	PropertyId uint
-	Property   Property `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
