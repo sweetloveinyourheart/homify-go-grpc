@@ -26,7 +26,8 @@ type PropertyClient interface {
 	AddAsset(ctx context.Context, in *AddAssetRequest, opts ...grpc.CallOption) (*ResultResponse, error)
 	ModifyAsset(ctx context.Context, in *ModifyAssetRequest, opts ...grpc.CallOption) (*ResultResponse, error)
 	DisableAsset(ctx context.Context, in *DisableAssetRequest, opts ...grpc.CallOption) (*ResultResponse, error)
-	AddProperty(ctx context.Context, in *NewProperty, opts ...grpc.CallOption) (*ResultResponse, error)
+	AddProperty(ctx context.Context, in *NewPropertyRequest, opts ...grpc.CallOption) (*ResultResponse, error)
+	EditProperty(ctx context.Context, in *EditPropertyRequest, opts ...grpc.CallOption) (*ResultResponse, error)
 	SyncProperties(ctx context.Context, in *SyncPropertiesRequest, opts ...grpc.CallOption) (*ResultResponse, error)
 }
 
@@ -74,9 +75,18 @@ func (c *propertyClient) DisableAsset(ctx context.Context, in *DisableAssetReque
 	return out, nil
 }
 
-func (c *propertyClient) AddProperty(ctx context.Context, in *NewProperty, opts ...grpc.CallOption) (*ResultResponse, error) {
+func (c *propertyClient) AddProperty(ctx context.Context, in *NewPropertyRequest, opts ...grpc.CallOption) (*ResultResponse, error) {
 	out := new(ResultResponse)
 	err := c.cc.Invoke(ctx, "/Property/AddProperty", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *propertyClient) EditProperty(ctx context.Context, in *EditPropertyRequest, opts ...grpc.CallOption) (*ResultResponse, error) {
+	out := new(ResultResponse)
+	err := c.cc.Invoke(ctx, "/Property/EditProperty", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -100,7 +110,8 @@ type PropertyServer interface {
 	AddAsset(context.Context, *AddAssetRequest) (*ResultResponse, error)
 	ModifyAsset(context.Context, *ModifyAssetRequest) (*ResultResponse, error)
 	DisableAsset(context.Context, *DisableAssetRequest) (*ResultResponse, error)
-	AddProperty(context.Context, *NewProperty) (*ResultResponse, error)
+	AddProperty(context.Context, *NewPropertyRequest) (*ResultResponse, error)
+	EditProperty(context.Context, *EditPropertyRequest) (*ResultResponse, error)
 	SyncProperties(context.Context, *SyncPropertiesRequest) (*ResultResponse, error)
 	mustEmbedUnimplementedPropertyServer()
 }
@@ -121,8 +132,11 @@ func (UnimplementedPropertyServer) ModifyAsset(context.Context, *ModifyAssetRequ
 func (UnimplementedPropertyServer) DisableAsset(context.Context, *DisableAssetRequest) (*ResultResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DisableAsset not implemented")
 }
-func (UnimplementedPropertyServer) AddProperty(context.Context, *NewProperty) (*ResultResponse, error) {
+func (UnimplementedPropertyServer) AddProperty(context.Context, *NewPropertyRequest) (*ResultResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddProperty not implemented")
+}
+func (UnimplementedPropertyServer) EditProperty(context.Context, *EditPropertyRequest) (*ResultResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditProperty not implemented")
 }
 func (UnimplementedPropertyServer) SyncProperties(context.Context, *SyncPropertiesRequest) (*ResultResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SyncProperties not implemented")
@@ -213,7 +227,7 @@ func _Property_DisableAsset_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _Property_AddProperty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NewProperty)
+	in := new(NewPropertyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -225,7 +239,25 @@ func _Property_AddProperty_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/Property/AddProperty",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PropertyServer).AddProperty(ctx, req.(*NewProperty))
+		return srv.(PropertyServer).AddProperty(ctx, req.(*NewPropertyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Property_EditProperty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EditPropertyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PropertyServer).EditProperty(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Property/EditProperty",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PropertyServer).EditProperty(ctx, req.(*EditPropertyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -274,6 +306,10 @@ var Property_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddProperty",
 			Handler:    _Property_AddProperty_Handler,
+		},
+		{
+			MethodName: "EditProperty",
+			Handler:    _Property_EditProperty_Handler,
 		},
 		{
 			MethodName: "SyncProperties",

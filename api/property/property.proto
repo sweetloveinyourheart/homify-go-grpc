@@ -8,7 +8,8 @@ service Property {
     rpc ModifyAsset(ModifyAssetRequest) returns (ResultResponse);
     rpc DisableAsset(DisableAssetRequest) returns (ResultResponse);
 
-    rpc AddProperty(NewProperty) returns (ResultResponse);
+    rpc AddProperty(NewPropertyRequest) returns (ResultResponse);
+    rpc EditProperty(EditPropertyRequest) returns (ResultResponse);
     rpc SyncProperties(SyncPropertiesRequest) returns (ResultResponse);
 }
 
@@ -54,21 +55,37 @@ message DisableAssetRequest {
 
 // Property
 
-message NewDestination {
+message NewDestinationRequest {
     string country = 1;
     string city = 2;
     float latitude = 3;
     float longitude = 4;
 }
 
-message NewProperty {
+message NewPropertyRequest {
     uint32 host_id = 1;
     string title = 2;
     string description = 3;
     float price = 4;
     uint32 category_id = 5;
     uint32 amenity_id = 6;
-    NewDestination destination = 7;
+    NewDestinationRequest destination = 7;
+}
+
+message EditDestinationRequest {
+    string country = 1;
+    string city = 2;
+    float latitude = 3;
+    float longitude = 4;
+}
+
+message EditPropertyRequest {
+    string title = 1;
+    string description = 2;
+    float price = 3;
+    uint32 category_id = 4;
+    uint32 amenity_id = 5;
+    EditDestinationRequest destination = 6;
 }
 
 message SyncPropertiesRequest {}

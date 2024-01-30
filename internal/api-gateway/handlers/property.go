@@ -54,14 +54,14 @@ func (h *PropertyHandler) AddNewProperty(ctx *gin.Context) {
 		return
 	}
 
-	newProperty := &proto.NewProperty{
+	newProperty := &proto.NewPropertyRequest{
 		HostId:      uint32(authenticatedUser.Id),
 		Title:       newPropertyData.Title,
 		Description: newPropertyData.Description,
 		Price:       newPropertyData.Price,
 		AmenityId:   uint32(newPropertyData.AmenityId),
 		CategoryId:  uint32(newPropertyData.CategoryId),
-		Destination: &proto.NewDestination{
+		Destination: &proto.NewDestinationRequest{
 			Country:   newPropertyData.Destination.Country,
 			City:      newPropertyData.Destination.City,
 			Latitude:  newPropertyData.Destination.Latitude,
@@ -72,6 +72,52 @@ func (h *PropertyHandler) AddNewProperty(ctx *gin.Context) {
 	propertyCtx := context.Background()
 
 	h.grpcClient.AddProperty(propertyCtx, newProperty)
+
+	ctx.JSON(200, gin.H{
+		"Success": true,
+	})
+}
+
+// @Summary Edit a property
+// @Tags Property
+// @Description Edit a property to the property listings.
+// @ID edit-property
+// @Accept  json
+// @Produce  json
+// @Security Authorization
+// @Param input body dtos.EditPropertyDTO true "Property object to be updated"
+// @Success 200 {object} interface{} "Successfully updated the new property"
+// @Router /property [put]
+func (h *PropertyHandler) EditProperty(ctx *gin.Context) {
+	propertyData := dtos.EditPropertyDTO{}
+	if bindError := ctx.ShouldBindJSON(&propertyData); bindError != nil {
+		ctx.JSON(400, gin.H{"error": bindError.Error()})
+		return
+	}
+
+	validatorError := h.validator.Struct(propertyData)
+	if validatorError != nil {
+		helpers.HandleValidationErrors(ctx, validatorError)
+		return
+	}
+
+	property := &proto.EditPropertyRequest{
+		Title:       propertyData.Title,
+		Description: propertyData.Description,
+		Price:       propertyData.Price,
+		AmenityId:   uint32(propertyData.AmenityId),
+		CategoryId:  uint32(propertyData.CategoryId),
+		Destination: &proto.EditDestinationRequest{
+			Country:   propertyData.Destination.Country,
+			City:      propertyData.Destination.City,
+			Latitude:  propertyData.Destination.Latitude,
+			Longitude: propertyData.Destination.Longitude,
+		},
+	}
+
+	propertyCtx := context.Background()
+
+	h.grpcClient.EditProperty(propertyCtx, property)
 
 	ctx.JSON(200, gin.H{
 		"Success": true,

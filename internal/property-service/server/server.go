@@ -38,7 +38,7 @@ const (
 
 // Property handlers
 
-func (s *GRPCPropertyServer) AddProperty(ctx context.Context, req *proto.NewProperty) (*proto.ResultResponse, error) {
+func (s *GRPCPropertyServer) AddProperty(ctx context.Context, req *proto.NewPropertyRequest) (*proto.ResultResponse, error) {
 	assetIds := types.PropertyAssetIds{
 		CategoryId: uint(req.CategoryId),
 		AmenityId:  uint(req.AmenityId),
